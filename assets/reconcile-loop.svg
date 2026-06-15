@@ -1,0 +1,57 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">OpenTelemetry Operator 实现原理图</title>
+  <desc id="desc">展示 Operator 的 reconcile loop：监听 CRD、解析配置、生成 Kubernetes 资源、持续校正状态。</desc>
+  <defs>
+    <linearGradient id="bg" x1="120" y1="60" x2="1060" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0D1B31"/>
+      <stop offset="1" stop-color="#09111E"/>
+    </linearGradient>
+    <linearGradient id="arrow" x1="220" y1="380" x2="980" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6CE5FF"/>
+      <stop offset="1" stop-color="#8B84FF"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000714" flood-opacity="0.34"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="760" rx="36" fill="url(#bg)"/>
+  <text x="78" y="96" fill="#EEF5FF" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="800">它的实现原理：本质是一个持续循环的协调器</text>
+  <text x="78" y="136" fill="#A8BBD8" font-family="Inter,Arial,sans-serif" font-size="20">不是一次性脚本，而是“看见变化 → 重新计算 → 修正现实状态”的闭环</text>
+
+  <path d="M220 380H980" stroke="url(#arrow)" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+  <path d="M980 380C1060 380 1060 580 880 620C720 656 456 650 280 620C120 592 120 436 220 380" stroke="#314A73" stroke-width="3" stroke-dasharray="10 10" opacity="0.7"/>
+
+  <g filter="url(#shadow)">
+    <rect x="88" y="246" width="220" height="240" rx="26" fill="#10213A" stroke="#2D537A"/>
+    <text x="122" y="302" fill="#C7F7FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">Step 1</text>
+    <text x="122" y="346" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">监听</text>
+    <text x="122" y="390" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">Watch CRD / Pod 注解 / 资源状态</text>
+    <text x="122" y="424" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">任何新增、修改、删除都会触发</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="354" y="206" width="230" height="320" rx="26" fill="#102139" stroke="#365786"/>
+    <text x="388" y="262" fill="#C7F7FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">Step 2</text>
+    <text x="388" y="306" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">计算</text>
+    <text x="388" y="350" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">读取 spec.mode 与 spec.config</text>
+    <text x="388" y="384" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">解析 receiver 端口</text>
+    <text x="388" y="418" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">判断是否生成 Service、监控对象等</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="628" y="206" width="230" height="320" rx="26" fill="#102038" stroke="#3B5B89"/>
+    <text x="662" y="262" fill="#C7F7FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">Step 3</text>
+    <text x="662" y="306" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">生成</text>
+    <text x="662" y="350" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">创建 Deployment / DaemonSet / StatefulSet</text>
+    <text x="662" y="384" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">配套 ConfigMap / Service / PDB</text>
+    <text x="662" y="418" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">必要时还会创建监控相关对象</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="902" y="246" width="214" height="240" rx="26" fill="#101F37" stroke="#4C569E"/>
+    <text x="936" y="302" fill="#DDD8FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">Step 4</text>
+    <text x="936" y="346" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">校正</text>
+    <text x="936" y="390" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">真实状态偏离期望时</text>
+    <text x="936" y="424" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">再次 reconcile 直到收敛</text>
+  </g>
+</svg>

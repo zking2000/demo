@@ -571,6 +571,111 @@
     }
     .mini-arch small { color: var(--muted); font-size: 12px; display: block; margin-top: 6px; }
 
+    .visual-split {
+      display: grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap: 24px;
+      align-items: center;
+    }
+    .visual-panel,
+    .text-panel {
+      padding: 24px;
+    }
+    .caption {
+      color: var(--muted);
+      font-size: 15px;
+      margin-top: 14px;
+    }
+    .mini-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .mini-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .mini-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #eef6ff;
+    }
+    .mini-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .resource-card {
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+    }
+    .resource-card .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: #c9efff;
+      background: rgba(108,229,255,.08);
+      border: 1px solid rgba(108,229,255,.16);
+      margin-bottom: 12px;
+    }
+    .resource-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+    .resource-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .component-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .component-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .component-item .label {
+      font-size: 12px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      font-weight: 700;
+      padding-top: 3px;
+    }
+    .component-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #eef6ff;
+    }
+    .component-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
     .code-section {
       display: grid;
       gap: 20px;
@@ -641,13 +746,16 @@
       .hero-grid,
       .story,
       .cncf-band,
+      .visual-split,
       .grid-3,
       .grid-2,
       .compare,
       .takeaways,
+      .resource-grid,
       .quick-grid { grid-template-columns: 1fr; }
       .hero-meta { grid-template-columns: 1fr; }
-      .mini-arch .row { grid-template-columns: 1fr; }
+      .mini-arch .row,
+      .mini-cards { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 720px) {
@@ -659,9 +767,10 @@
       .node.left { top: 58%; }
       .node.right { top: 58%; }
       .connector.h1, .connector.h2 { width: 150px; }
-      .card, .panel, .hero-card, .cncf-copy, .cncf-diagram { padding: 18px; }
+      .card, .panel, .hero-card, .cncf-copy, .cncf-diagram, .visual-panel, .text-panel { padding: 18px; }
       .step { grid-template-columns: 48px 1fr; }
       .step-badge { width: 48px; height: 48px; border-radius: 14px; }
+      .component-item { grid-template-columns: 1fr; gap: 8px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -679,9 +788,10 @@
       </div>
       <div class="nav-links">
         <a href="#what">它是什么</a>
-        <a href="#how">怎么工作</a>
+        <a href="#groups">资源组</a>
+        <a href="#components">组件用途</a>
+        <a href="#principle">实现原理</a>
         <a href="#install">如何安装</a>
-        <a href="#crd">CRD 示例</a>
         <a href="#faq">FAQ</a>
       </div>
     </div>
@@ -807,6 +917,98 @@
       </div>
     </section>
 
+    <section id="groups">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">Groups</div>
+          <h2>先看“资源组”：Operator 实际管理哪些 CRD？</h2>
+          <p class="section-desc">先记住 4 个名字即可：<code>OpenTelemetryCollector</code> 管采集器，<code>Instrumentation</code> 管自动注入，<code>TargetAllocator</code> 管 Prometheus 目标分配，<code>OpAMPBridge</code> 管远端桥接。</p>
+        </div>
+
+        <div class="panel visual-panel">
+          <img src="assets/resource-groups.svg" alt="OpenTelemetry Operator 资源组示意图，包含 OpenTelemetryCollector、Instrumentation、TargetAllocator、OpAMPBridge" />
+          <div class="caption">图解理解：它们都属于 <code>opentelemetry.io</code> 这组 API，但分别解决“采集器管理、自动注入、抓取目标分配、远程管理桥接”四类问题。</div>
+        </div>
+
+        <div class="resource-grid">
+          <article class="resource-card">
+            <div class="tag">v1beta1</div>
+            <h3>OpenTelemetryCollector</h3>
+            <p>声明 Collector 的运行形态与 pipeline。</p>
+          </article>
+          <article class="resource-card">
+            <div class="tag">v1alpha1</div>
+            <h3>Instrumentation</h3>
+            <p>定义自动注入探针时用到的语言与导出配置。</p>
+          </article>
+          <article class="resource-card">
+            <div class="tag">v1alpha1</div>
+            <h3>TargetAllocator</h3>
+            <p>给多个 Collector 分配 Prometheus 抓取目标。</p>
+          </article>
+          <article class="resource-card">
+            <div class="tag">v1alpha1</div>
+            <h3>OpAMPBridge</h3>
+            <p>把集群内 Collector 连接到远端 OpAMP 管理端。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="components">
+      <div class="wrap visual-split">
+        <div class="panel visual-panel">
+          <img src="assets/components-runtime.svg" alt="OpenTelemetry Operator 运行组件图，展示 controller manager、admission webhook、collector 与 backends" />
+          <div class="caption">你可以把它分成两层来看：上层是控制平面（controller manager、webhook），下层是被它管理出来的工作负载（Collector、TargetAllocator 等）。</div>
+        </div>
+        <div class="panel text-panel">
+          <div class="section-kicker">Components</div>
+          <h2>再看“组件用途”：每个组件分别干什么？</h2>
+          <div class="component-list">
+            <div class="component-item">
+              <div class="label">核心控制器</div>
+              <div>
+                <strong>Controller Manager</strong>
+                <p>负责 watch CRD 并执行 reconcile，把期望状态变成真实资源。</p>
+              </div>
+            </div>
+            <div class="component-item">
+              <div class="label">变更入口</div>
+              <div>
+                <strong>Admission Webhook</strong>
+                <p>在 Pod 创建时改写清单，自动注入探针、环境变量或 sidecar。</p>
+              </div>
+            </div>
+            <div class="component-item">
+              <div class="label">采集执行面</div>
+              <div>
+                <strong>OpenTelemetry Collector</strong>
+                <p>真正负责接收、处理、转发链路追踪、指标和日志。</p>
+              </div>
+            </div>
+            <div class="component-item">
+              <div class="label">辅助扩展</div>
+              <div>
+                <strong>TargetAllocator / OpAMPBridge</strong>
+                <p>前者分配抓取目标，后者做远端 OpAMP 桥接。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-cards">
+            <div class="mini-card">
+              <strong>为什么常提 cert-manager？</strong>
+              <p>因为 admission webhook 往往需要证书，官方安装说明里通常会先准备 cert-manager。</p>
+            </div>
+            <div class="mini-card">
+              <strong>为什么说它是平台能力？</strong>
+              <p>因为它把“应用接入观测”从每个业务团队的手工活，变成平台层统一托管的基础设施。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <div class="wrap cncf-band">
         <div class="cncf-copy panel">
@@ -866,66 +1068,82 @@
       </div>
     </section>
 
-    <section id="how">
+    <section id="principle">
       <div class="wrap">
         <div class="section-head">
-          <div class="section-kicker">How</div>
-          <h2>它是怎么工作的？</h2>
-          <p class="section-desc">从思路上看，非常像“你下目标，我来执行”。下面这 4 步基本概括了 OpenTelemetry Operator 的工作方式。</p>
+          <div class="section-kicker">Principle</div>
+          <h2>实现原理：它为什么能“自动把事情做完”？</h2>
+          <p class="section-desc">本质上靠两套机制一起工作：一套是 <strong>reconcile 循环</strong>，负责把 CRD 变成真正的 Kubernetes 资源；另一套是 <strong>admission webhook</strong>，负责在应用创建时自动注入探针。</p>
         </div>
 
         <div class="grid-2">
+          <div class="panel visual-panel">
+            <img src="assets/reconcile-loop.svg" alt="OpenTelemetry Operator reconcile loop 原理图" />
+            <div class="caption">官方思路可以概括成四步：监听变化 → 读取 spec → 生成底层资源 → 发现偏差后再次协调，直到真实状态收敛到期望状态。</div>
+          </div>
+
           <div class="panel" style="padding: 22px;">
             <div class="timeline">
               <div class="step">
                 <div class="step-badge">1</div>
                 <div>
-                  <h3>你声明需求</h3>
-                  <p>例如创建一个 <code>OpenTelemetryCollector</code> 自定义资源，告诉集群：我想要怎样的 Collector、跑几个副本、暴露哪些端口、使用什么 pipeline。</p>
+                  <h3>监听 CRD 与状态变化</h3>
+                  <p>Controller Manager 会 watch <code>OpenTelemetryCollector</code> 等资源。一旦你新建、修改或删除这些对象，就会触发一次新的协调流程。</p>
                 </div>
               </div>
               <div class="step">
                 <div class="step-badge">2</div>
                 <div>
-                  <h3>Operator 监听变化</h3>
-                  <p>它会持续观察这些自定义资源，一旦发现新增、修改或删除，就开始执行相应动作。</p>
+                  <h3>解析 spec 并计算目标资源</h3>
+                  <p>它会读取 <code>mode</code>、<code>config</code>、端口、监控开关等信息，决定该生成什么样的 Deployment、DaemonSet、Service、ConfigMap 等对象。</p>
                 </div>
               </div>
               <div class="step">
                 <div class="step-badge">3</div>
                 <div>
-                  <h3>自动创建底层资源</h3>
-                  <p>它会替你生成 Kubernetes 原生资源，比如 Deployment、DaemonSet、Service、ConfigMap，确保 Collector 真正跑起来。</p>
+                  <h3>把配置渲染成 Kubernetes 原生对象</h3>
+                  <p>例如根据 Collector 配置里的 receiver 端口生成对应 Service；如果开启 observability metrics，还会生成相关监控对象。</p>
                 </div>
               </div>
               <div class="step">
                 <div class="step-badge">4</div>
                 <div>
-                  <h3>持续保持目标状态</h3>
-                  <p>如果 Pod 挂了、配置变了、版本升级了，Operator 会继续协调，尽量让真实运行状态回到你声明的理想状态。</p>
+                  <h3>持续校正而不是一次性创建</h3>
+                  <p>如果 Pod 异常、版本更新、配置被改掉，Operator 会继续 reconcile，让实际状态尽量回到你声明的目标状态。</p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="panel" style="padding: 22px; display: grid; align-content: center; gap: 18px;">
-            <img src="assets/operator-flow.svg" alt="Operator 工作流图：声明资源、监听、创建 Collector、输出遥测数据" />
-            <div class="compare">
-              <div class="compare-box">
-                <h3>你负责</h3>
-                <ul>
-                  <li>定义想要的采集规则</li>
-                  <li>决定数据发往哪里</li>
-                  <li>选择部署模式</li>
-                </ul>
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="panel visual-panel">
+            <img src="assets/injection-flow.svg" alt="OpenTelemetry Operator 自动注入探针流程图" />
+            <div class="caption">自动注入不是应用自己“突然支持 OTel”，而是在 Pod 创建阶段由 webhook 拦截并改写清单，把探针、环境变量或 sidecar 加进去。</div>
+          </div>
+          <div class="panel text-panel">
+            <h3 style="margin-top:0; font-size:30px;">自动注入这件事是怎么实现的？</h3>
+            <div class="component-list">
+              <div class="component-item">
+                <div class="label">注解触发</div>
+                <div>
+                  <strong>应用 Pod 带上注解</strong>
+                  <p>例如用注解声明要注入 Java、Node.js、Python 等语言的自动探针，或指定具体的 <code>Instrumentation</code> 资源。</p>
+                </div>
               </div>
-              <div class="compare-box">
-                <h3>Operator 负责</h3>
-                <ul>
-                  <li>创建和更新资源</li>
-                  <li>让 Collector 按预期运行</li>
-                  <li>减少重复劳动和人为错误</li>
-                </ul>
+              <div class="component-item">
+                <div class="label">Webhook 改写</div>
+                <div>
+                  <strong>创建请求被 Admission Webhook 拦截</strong>
+                  <p>Webhook 读取 <code>Instrumentation</code> 里的 exporter、采样器、资源属性等配置，再把 Pod 模板补充完整。</p>
+                </div>
+              </div>
+              <div class="component-item">
+                <div class="label">最终效果</div>
+                <div>
+                  <strong>应用启动时已经“带着探针”</strong>
+                  <p>也就是说，你看到的是一个已经被改写过的 Pod：里面多了探针依赖、环境变量、挂载项或 initContainer。</p>
+                </div>
               </div>
             </div>
           </div>

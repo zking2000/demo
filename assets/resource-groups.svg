@@ -1,0 +1,66 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">OpenTelemetry Operator 资源组示意图</title>
+  <desc id="desc">展示 opentelemetry.io API group 下的四类核心自定义资源及其用途。</desc>
+  <defs>
+    <linearGradient id="bg" x1="100" y1="40" x2="1100" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F1F37"/>
+      <stop offset="1" stop-color="#091321"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6CE5FF"/>
+      <stop offset="1" stop-color="#5FA8FF"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#9A8BFF"/>
+      <stop offset="1" stop-color="#6C8BFF"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="22" flood-color="#000814" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="760" rx="36" fill="url(#bg)"/>
+  <rect x="36" y="36" width="1128" height="688" rx="28" stroke="rgba(255,255,255,0.10)" stroke="#2B4669"/>
+  <text x="78" y="104" fill="#EAF4FF" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="800">OpenTelemetry Operator 主要资源组</text>
+  <text x="78" y="142" fill="#A8BBD8" font-family="Inter,Arial,sans-serif" font-size="20">同一个 API Group：opentelemetry.io，但按用途可以分成 4 组来理解</text>
+
+  <g filter="url(#shadow)">
+    <rect x="78" y="196" width="490" height="220" rx="28" fill="#102036" stroke="#2A4E77"/>
+    <rect x="104" y="224" width="158" height="34" rx="17" fill="#122A45" stroke="#3B6DA1"/>
+    <text x="128" y="247" fill="#BEEFFF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">v1beta1 · 核心采集组</text>
+    <text x="104" y="296" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800">OpenTelemetryCollector</text>
+    <text x="104" y="338" fill="#A8BBD8" font-family="Inter,Arial,sans-serif" font-size="20">声明一个 Collector 应该如何运行</text>
+    <text x="104" y="372" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">• mode: deployment / daemonset / statefulset / sidecar</text>
+    <text x="104" y="402" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">• config: receivers / processors / exporters / pipelines</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="632" y="196" width="490" height="220" rx="28" fill="#101E35" stroke="#2E4A7A"/>
+    <rect x="658" y="224" width="184" height="34" rx="17" fill="#13243F" stroke="#4F67B8"/>
+    <text x="682" y="247" fill="#D8D8FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">v1alpha1 · 自动注入组</text>
+    <text x="658" y="296" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800">Instrumentation</text>
+    <text x="658" y="338" fill="#A8BBD8" font-family="Inter,Arial,sans-serif" font-size="20">定义应用如何被自动注入探针</text>
+    <text x="658" y="372" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">• 指定 exporter、采样器、资源属性</text>
+    <text x="658" y="402" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">• 支持 Java / Node.js / Python / .NET / Go 等语言</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="78" y="458" width="490" height="220" rx="28" fill="#101F36" stroke="#2F507A"/>
+    <rect x="104" y="486" width="172" height="34" rx="17" fill="#102A44" stroke="#3F76A4"/>
+    <text x="128" y="509" fill="#BEEFFF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">v1alpha1 · Prometheus 目标分配组</text>
+    <text x="104" y="558" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800">TargetAllocator</text>
+    <text x="104" y="600" fill="#A8BBD8" font-family="Inter,Arial,sans-serif" font-size="20">把抓取目标更均衡地分配给多个 Collector 实例</text>
+    <text x="104" y="634" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">• 适合 Prometheus Receiver 横向扩缩容场景</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="632" y="458" width="490" height="220" rx="28" fill="#101E35" stroke="#374C86"/>
+    <rect x="658" y="486" width="168" height="34" rx="17" fill="#162544" stroke="#5B62D8"/>
+    <text x="682" y="509" fill="#E0DCFF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">v1alpha1 · 远程控制桥接组</text>
+    <text x="658" y="558" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800">OpAMPBridge</text>
+    <text x="658" y="600" fill="#A8BBD8" font-family="Inter,Arial,sans-serif" font-size="20">把集群内 Collector 和远端 OpAMP 管理端连接起来</text>
+    <text x="658" y="634" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">• 适合集中配置、远程管理与 fleet 级控制</text>
+  </g>
+
+  <path d="M600 168V690" stroke="url(#cyan)" stroke-width="2" stroke-dasharray="8 10" opacity="0.65"/>
+  <path d="M70 437H1130" stroke="url(#violet)" stroke-width="2" stroke-dasharray="8 10" opacity="0.55"/>
+</svg>

@@ -1,0 +1,61 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">自动注入探针流程图</title>
+  <desc id="desc">展示带有 instrumentation 注解的应用 Pod 如何经过 admission webhook 被改写并注入 OpenTelemetry 配置。</desc>
+  <defs>
+    <linearGradient id="bg" x1="90" y1="60" x2="1080" y2="710" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1A2F"/>
+      <stop offset="1" stop-color="#09111E"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6CE5FF"/>
+      <stop offset="1" stop-color="#5FA8FF"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000814" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="760" rx="36" fill="url(#bg)"/>
+  <text x="78" y="98" fill="#EEF5FF" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="800">自动注入探针是怎么发生的？</text>
+  <text x="78" y="138" fill="#A8BBD8" font-family="Inter,Arial,sans-serif" font-size="20">核心不是“应用自己变了”，而是 Pod 创建时被 webhook 改写了</text>
+
+  <g filter="url(#shadow)">
+    <rect x="76" y="208" width="250" height="360" rx="28" fill="#10213A" stroke="#2E567E"/>
+    <text x="114" y="262" fill="#C7F7FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">1. 用户提交</text>
+    <text x="114" y="310" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">Deployment / Pod</text>
+    <text x="114" y="362" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">带上注解：</text>
+    <text x="114" y="394" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">instrumentation.opentelemetry.io/inject-java: "true"</text>
+    <text x="114" y="442" fill="#9FD7E7" font-family="Inter,Arial,sans-serif" font-size="16">或引用具体 Instrumentation 资源</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="370" y="168" width="250" height="440" rx="28" fill="#112139" stroke="#385887"/>
+    <text x="408" y="222" fill="#C7F7FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">2. Admission 阶段</text>
+    <text x="408" y="270" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">Webhook 拦截</text>
+    <text x="408" y="322" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">读取 Instrumentation 配置</text>
+    <text x="408" y="354" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">决定注入哪种语言探针</text>
+    <text x="408" y="386" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">补充 env / volume / initContainer</text>
+    <text x="408" y="430" fill="#9FD7E7" font-family="Inter,Arial,sans-serif" font-size="16">这一步还没真正运行应用，</text>
+    <text x="408" y="458" fill="#9FD7E7" font-family="Inter,Arial,sans-serif" font-size="16">只是改写 Pod 定义</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="664" y="208" width="250" height="360" rx="28" fill="#102038" stroke="#3B5B89"/>
+    <text x="702" y="262" fill="#C7F7FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">3. Pod 落地</text>
+    <text x="702" y="310" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">带探针启动</text>
+    <text x="702" y="362" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">应用容器拿到 OTEL_* 环境变量</text>
+    <text x="702" y="394" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">探针库被挂载或预加载</text>
+    <text x="702" y="426" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">应用自动产生日志/指标/链路</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="958" y="248" width="166" height="280" rx="28" fill="#111F37" stroke="#4C569E"/>
+    <text x="992" y="302" fill="#DDD8FF" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">4. 发往</text>
+    <text x="992" y="350" fill="#F1F7FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">Collector</text>
+    <text x="992" y="402" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">再由 Collector</text>
+    <text x="992" y="432" fill="#D8E7F8" font-family="Inter,Arial,sans-serif" font-size="18">处理并转发</text>
+  </g>
+
+  <path d="M326 388H370" stroke="url(#cyan)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M620 388H664" stroke="url(#cyan)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M914 388H958" stroke="url(#cyan)" stroke-width="4" stroke-linecap="round"/>
+</svg>
