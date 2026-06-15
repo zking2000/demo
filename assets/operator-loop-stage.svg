@@ -14,7 +14,7 @@
 
   <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
   <text x="92" y="104" fill="#D9F6FF" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="4">CONTROL LOOP</text>
-  <text x="92" y="156" fill="#FFFFFF" font-size="44" font-family="Inter, Arial, sans-serif" font-weight="820">Operator 的循环动作</text>
+  <text x="92" y="156" fill="#FFFFFF" font-size="44" font-family="Inter, Arial, sans-serif" font-weight="820">What the Operator keeps doing</text>
 
   <circle cx="800" cy="500" r="250" stroke="#8EEBFF" stroke-opacity="0.24" stroke-width="3" stroke-dasharray="14 16">
     <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 800 500" to="360 800 500" dur="18s" repeatCount="indefinite"/>
@@ -23,30 +23,30 @@
   <g filter="url(#shadow)">
     <rect x="650" y="390" width="300" height="220" rx="34" fill="rgba(88,69,170,0.36)" stroke="#B4A6FF" stroke-width="2.2"/>
     <text x="708" y="470" fill="#FFFFFF" font-size="54" font-family="Inter, Arial, sans-serif" font-weight="860">Operator</text>
-    <text x="724" y="518" fill="#D7CFFF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="720">持续协调</text>
+    <text x="702" y="518" fill="#D7CFFF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="720">Continuous reconciliation</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="690" y="182" width="220" height="92" rx="22" fill="rgba(8,61,86,0.52)" stroke="#78E7FF"/>
-    <text x="757" y="238" fill="#F0FDFF" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820">监听</text>
+    <rect x="690" y="182" width="220" height="92" rx="22" fill="rgba(8,61,86,0.9)" stroke="#78E7FF"/>
+    <text x="800" y="238" fill="#F0FDFF" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Observe</text>
   </g>
   <g filter="url(#shadow)">
-    <rect x="1060" y="454" width="220" height="92" rx="22" fill="rgba(7,77,69,0.44)" stroke="#67E7B7"/>
-    <text x="1127" y="510" fill="#EBFFF5" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820">生成</text>
+    <rect x="1060" y="454" width="220" height="92" rx="22" fill="rgba(7,77,69,0.9)" stroke="#67E7B7"/>
+    <text x="1170" y="510" fill="#EBFFF5" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Create</text>
   </g>
   <g filter="url(#shadow)">
-    <rect x="690" y="726" width="220" height="92" rx="22" fill="rgba(88,67,15,0.42)" stroke="#FFD874"/>
-    <text x="757" y="782" fill="#FFF6D8" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820">改写</text>
+    <rect x="690" y="726" width="220" height="92" rx="22" fill="rgba(88,67,15,0.9)" stroke="#FFD874"/>
+    <text x="800" y="782" fill="#FFF6D8" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Mutate</text>
   </g>
   <g filter="url(#shadow)">
-    <rect x="320" y="454" width="220" height="92" rx="22" fill="rgba(13,28,46,0.92)" stroke="#A493FF"/>
-    <text x="387" y="510" fill="#ECE7FF" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820">校正</text>
+    <rect x="320" y="454" width="220" height="92" rx="22" fill="rgba(13,28,46,0.96)" stroke="#A493FF"/>
+    <text x="430" y="510" fill="#ECE7FF" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Correct</text>
   </g>
 
-  <path d="M800 274C970 274 1170 330 1170 500" stroke="#8EEBFF" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow)" opacity="0.42"/>
-  <path d="M1170 500C1170 660 970 772 800 772" stroke="#67E7B7" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow)" opacity="0.42"/>
-  <path d="M800 772C620 772 430 660 430 500" stroke="#FFD874" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow)" opacity="0.42"/>
-  <path d="M430 500C430 330 620 274 800 274" stroke="#A493FF" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow)" opacity="0.42"/>
+  <path d="M800 274C970 274 1170 330 1170 500" stroke="#8EEBFF" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+  <path d="M1170 500C1170 660 970 772 800 772" stroke="#67E7B7" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+  <path d="M800 772C620 772 430 660 430 500" stroke="#FFD874" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+  <path d="M430 500C430 330 620 274 800 274" stroke="#A493FF" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
 
   <circle r="10" fill="#95EFFF"><animateMotion dur="4.3s" repeatCount="indefinite" path="M800 274C970 274 1170 330 1170 500"/></circle>
   <circle r="10" fill="#76ECC2"><animateMotion dur="4.2s" repeatCount="indefinite" path="M1170 500C1170 660 970 772 800 772"/></circle>

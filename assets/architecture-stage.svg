@@ -24,20 +24,20 @@
   <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
 
   <text x="92" y="104" fill="#D9F6FF" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="4">POSITION</text>
-  <text x="92" y="156" fill="#FFFFFF" font-size="44" font-family="Inter, Arial, sans-serif" font-weight="820">OpenTelemetry Operator 在整套观测架构中的位置</text>
+  <text x="92" y="156" fill="#FFFFFF" font-size="44" font-family="Inter, Arial, sans-serif" font-weight="820">Where OpenTelemetry Operator sits in the stack</text>
 
   <g opacity="0.9">
-    <rect x="92" y="196" width="280" height="70" rx="18" fill="rgba(11,20,34,0.78)" stroke="rgba(255,255,255,0.08)"/>
+    <rect x="92" y="196" width="380" height="70" rx="18" fill="rgba(11,20,34,0.88)" stroke="rgba(255,255,255,0.08)"/>
     <circle cx="132" cy="231" r="8" fill="#78E7FF"/>
-    <text x="152" y="238" fill="#DFF9FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">业务流</text>
-    <circle cx="244" cy="231" r="8" fill="#A493FF"/>
-    <text x="264" y="238" fill="#EEE8FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">控制流</text>
-    <circle cx="356" cy="231" r="8" fill="#FFD874"/>
-    <text x="376" y="238" fill="#FFF3CC" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">导出流</text>
+    <text x="152" y="238" fill="#DFF9FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Business flow</text>
+    <circle cx="276" cy="231" r="8" fill="#A493FF"/>
+    <text x="296" y="238" fill="#EEE8FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Control flow</text>
+    <circle cx="405" cy="231" r="8" fill="#FFD874"/>
+    <text x="425" y="238" fill="#FFF3CC" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Export flow</text>
   </g>
 
   <rect x="110" y="320" width="250" height="360" rx="28" fill="rgba(10,24,40,0.92)" stroke="rgba(120,231,255,0.24)" filter="url(#shadow)"/>
-  <text x="150" y="378" fill="#78E7FF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="780">应用</text>
+  <text x="150" y="378" fill="#78E7FF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="780">Applications</text>
   <rect x="140" y="410" width="190" height="74" rx="18" fill="rgba(8,61,86,0.52)" stroke="#78E7FF"/>
   <text x="183" y="455" fill="#F1FDFF" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Service A</text>
   <rect x="140" y="502" width="190" height="74" rx="18" fill="rgba(8,61,86,0.52)" stroke="#78E7FF"/>
@@ -51,15 +51,15 @@
   <g filter="url(#glow)">
     <rect x="560" y="388" width="480" height="156" rx="30" fill="rgba(88,69,170,0.38)" stroke="#B4A6FF" stroke-width="2.2"/>
   </g>
-  <text x="630" y="445" fill="#DCD4FF" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="760">控制面</text>
+  <text x="896" y="430" fill="#DCD4FF" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="760" text-anchor="end">Control plane</text>
   <text x="622" y="507" fill="#FFFFFF" font-size="56" font-family="Inter, Arial, sans-serif" font-weight="860">Operator</text>
 
   <rect x="560" y="582" width="480" height="110" rx="26" fill="rgba(10,22,38,0.94)" stroke="rgba(103,231,183,0.26)" filter="url(#shadow)"/>
-  <text x="628" y="625" fill="#7DEFC8" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="760">数据面</text>
+  <text x="896" y="618" fill="#7DEFC8" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="760" text-anchor="end">Data plane</text>
   <text x="622" y="670" fill="#FFFFFF" font-size="42" font-family="Inter, Arial, sans-serif" font-weight="840">Collector</text>
 
   <rect x="1240" y="320" width="250" height="360" rx="28" fill="rgba(24,31,50,0.94)" stroke="rgba(255,216,116,0.26)" filter="url(#shadow)"/>
-  <text x="1290" y="378" fill="#FFD874" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="780">后端</text>
+  <text x="1290" y="378" fill="#FFD874" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="780">Backends</text>
   <rect x="1270" y="410" width="190" height="74" rx="18" fill="rgba(88,67,15,0.34)" stroke="#FFD874"/>
   <text x="1330" y="455" fill="#FFF8DE" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Jaeger</text>
   <rect x="1270" y="502" width="190" height="74" rx="18" fill="rgba(88,67,15,0.34)" stroke="#FFD874"/>

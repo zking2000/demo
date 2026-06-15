@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpenTelemetry Operator 在整个观测架构中的位置</title>
-  <meta name="description" content="用更克制的版式和动态图，展示 OpenTelemetry Operator 的位置与控制循环。" />
+  <title>Where OpenTelemetry Operator Sits in the Observability Stack</title>
+  <meta name="description" content="A restrained, diagram-led English page showing where OpenTelemetry Operator sits and how its control loop works." />
   <style>
     :root {
       --bg:#07111d; --text:#f3f8ff; --muted:#93abca; --cyan:#74e6ff; --border:rgba(136,186,255,.16); --shadow:0 20px 70px rgba(0,0,0,.32); --max:1280px;
@@ -49,9 +49,9 @@
   <section class="section">
     <div class="wrap">
       <div class="kicker">Position</div>
-      <h1 class="title">它在中间。<br>负责控制接入。</h1>
-      <p class="thesis">左边是应用，下面是 Collector，右边是后端。</p>
-      <div class="visual"><img src="assets/architecture-stage.svg" alt="OpenTelemetry Operator 在应用、Collector、后端之间的位置，以及业务流、控制流、导出流的动态图" /></div>
+      <h1 class="title">It sits in the middle.<br>It controls onboarding.</h1>
+      <p class="thesis">Applications on the left, Collector below, backends on the right.</p>
+      <div class="visual"><img src="assets/architecture-stage.svg" alt="Where OpenTelemetry Operator sits between applications, Collector, and observability backends, with business, control, and export flows" /></div>
     </div>
   </section>
 
@@ -60,31 +60,31 @@
   <section class="section">
     <div class="wrap">
       <div class="kicker">Loop</div>
-      <h2 class="title">监听。生成。改写。校正。</h2>
-      <div class="visual"><img src="assets/operator-loop-stage.svg" alt="OpenTelemetry Operator 的控制循环动态图，展示监听、生成、改写、校正持续循环" /></div>
+      <h2 class="title">Observe. Create. Mutate. Correct.</h2>
+      <div class="visual"><img src="assets/operator-loop-stage.svg" alt="The OpenTelemetry Operator control loop showing observe, create, mutate, and correct as a continuous cycle" /></div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
       <div class="kicker">Components</div>
-      <h2 class="title">Operator 至少有这 4 个关键部分。</h2>
+      <h2 class="title">At minimum, these are the 4 key parts.</h2>
       <div class="component-grid">
         <article class="component-card">
           <h3>Controller Manager</h3>
-          <p>负责 watch CRD 与集群状态，触发 reconcile，是整个 Operator 的控制核心。</p>
+          <p>Watches CRDs and cluster state, then triggers reconcile. This is the main control core of the Operator.</p>
         </article>
         <article class="component-card">
           <h3>Admission Webhook</h3>
-          <p>在 Pod 创建时改写对象，完成自动注入、sidecar 注入和相关校验。</p>
+          <p>Mutates objects during Pod creation and handles auto-instrumentation, sidecar injection, and validation.</p>
         </article>
         <article class="component-card">
           <h3>OpenTelemetryCollector CRD</h3>
-          <p>声明 Collector 应该怎么跑：Deployment、DaemonSet、StatefulSet 或 Sidecar。</p>
+          <p>Declares how the Collector should run: as a Deployment, DaemonSet, StatefulSet, or Sidecar.</p>
         </article>
         <article class="component-card">
           <h3>Instrumentation CRD</h3>
-          <p>声明自动注入配置：探针、exporter、环境变量以及语言运行时参数。</p>
+          <p>Declares auto-instrumentation settings such as agents, exporter targets, environment variables, and runtime options.</p>
         </article>
       </div>
     </div>
