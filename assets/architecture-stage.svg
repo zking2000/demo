@@ -10,14 +10,14 @@
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#A493FF" flood-opacity="0.34"/>
     </filter>
-    <marker id="arrowBlue" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
-      <path d="M0 0L14 7L0 14Z" fill="#78E7FF"/>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#78E7FF"/>
     </marker>
-    <marker id="arrowPurple" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
-      <path d="M0 0L14 7L0 14Z" fill="#A493FF"/>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#A493FF"/>
     </marker>
-    <marker id="arrowAmber" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
-      <path d="M0 0L14 7L0 14Z" fill="#FFD874"/>
+    <marker id="arrowAmber" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#FFD874"/>
     </marker>
   </defs>
 
@@ -37,35 +37,35 @@
   </g>
 
   <rect x="110" y="320" width="250" height="360" rx="28" fill="rgba(10,24,40,0.92)" stroke="rgba(120,231,255,0.24)" filter="url(#shadow)"/>
-  <text x="150" y="378" fill="#78E7FF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="780">Applications</text>
+  <text x="235" y="378" fill="#78E7FF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="780" text-anchor="middle">Applications</text>
   <rect x="140" y="410" width="190" height="74" rx="18" fill="rgba(8,61,86,0.52)" stroke="#78E7FF"/>
-  <text x="183" y="455" fill="#F1FDFF" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Service A</text>
+  <text x="235" y="455" fill="#F1FDFF" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Service A</text>
   <rect x="140" y="502" width="190" height="74" rx="18" fill="rgba(8,61,86,0.52)" stroke="#78E7FF"/>
-  <text x="183" y="547" fill="#F1FDFF" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Service B</text>
+  <text x="235" y="547" fill="#F1FDFF" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Service B</text>
   <rect x="140" y="594" width="190" height="74" rx="18" fill="rgba(8,61,86,0.52)" stroke="#78E7FF"/>
-  <text x="183" y="639" fill="#F1FDFF" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Service C</text>
+  <text x="235" y="639" fill="#F1FDFF" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Service C</text>
 
   <rect x="650" y="290" width="300" height="70" rx="18" fill="rgba(7,77,69,0.28)" stroke="#67E7B7"/>
-  <text x="707" y="334" fill="#E8FFF5" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Instrumentation</text>
+  <text x="800" y="334" fill="#E8FFF5" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Instrumentation</text>
 
   <g filter="url(#glow)">
     <rect x="560" y="388" width="480" height="156" rx="30" fill="rgba(88,69,170,0.38)" stroke="#B4A6FF" stroke-width="2.2"/>
   </g>
-  <text x="896" y="430" fill="#DCD4FF" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="760" text-anchor="end">Control plane</text>
-  <text x="622" y="507" fill="#FFFFFF" font-size="56" font-family="Inter, Arial, sans-serif" font-weight="860">Operator</text>
+  <text x="800" y="430" fill="#DCD4FF" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="760" text-anchor="middle">Control plane</text>
+  <text x="800" y="507" fill="#FFFFFF" font-size="56" font-family="Inter, Arial, sans-serif" font-weight="860" text-anchor="middle">Operator</text>
 
   <rect x="560" y="582" width="480" height="110" rx="26" fill="rgba(10,22,38,0.94)" stroke="rgba(103,231,183,0.26)" filter="url(#shadow)"/>
-  <text x="896" y="618" fill="#7DEFC8" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="760" text-anchor="end">Data plane</text>
-  <text x="622" y="670" fill="#FFFFFF" font-size="42" font-family="Inter, Arial, sans-serif" font-weight="840">Collector</text>
+  <text x="800" y="618" fill="#7DEFC8" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="760" text-anchor="middle">Data plane</text>
+  <text x="800" y="670" fill="#FFFFFF" font-size="42" font-family="Inter, Arial, sans-serif" font-weight="840" text-anchor="middle">Collector</text>
 
   <rect x="1240" y="320" width="250" height="360" rx="28" fill="rgba(24,31,50,0.94)" stroke="rgba(255,216,116,0.26)" filter="url(#shadow)"/>
-  <text x="1290" y="378" fill="#FFD874" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="780">Backends</text>
+  <text x="1365" y="378" fill="#FFD874" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="780" text-anchor="middle">Backends</text>
   <rect x="1270" y="410" width="190" height="74" rx="18" fill="rgba(88,67,15,0.34)" stroke="#FFD874"/>
-  <text x="1330" y="455" fill="#FFF8DE" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Jaeger</text>
+  <text x="1365" y="455" fill="#FFF8DE" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Mimir</text>
   <rect x="1270" y="502" width="190" height="74" rx="18" fill="rgba(88,67,15,0.34)" stroke="#FFD874"/>
-  <text x="1339" y="547" fill="#FFF8DE" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Tempo</text>
+  <text x="1365" y="547" fill="#FFF8DE" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Tempo</text>
   <rect x="1270" y="594" width="190" height="74" rx="18" fill="rgba(88,67,15,0.34)" stroke="#FFD874"/>
-  <text x="1295" y="639" fill="#FFF8DE" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820">Prometheus</text>
+  <text x="1365" y="639" fill="#FFF8DE" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Loki</text>
 
   <path d="M330 447H560" stroke="#78E7FF" stroke-width="7" stroke-linecap="round" marker-end="url(#arrowBlue)" opacity="0.46"/>
   <path d="M330 539H560" stroke="#78E7FF" stroke-width="7" stroke-linecap="round" marker-end="url(#arrowBlue)" opacity="0.46"/>

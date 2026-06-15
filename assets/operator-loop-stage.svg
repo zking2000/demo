@@ -7,8 +7,8 @@
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000814" flood-opacity="0.42"/>
     </filter>
-    <marker id="arrow" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
-      <path d="M0 0L14 7L0 14Z" fill="#8EEBFF"/>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#8EEBFF"/>
     </marker>
   </defs>
 
@@ -16,14 +16,14 @@
   <text x="92" y="104" fill="#D9F6FF" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="4">CONTROL LOOP</text>
   <text x="92" y="156" fill="#FFFFFF" font-size="44" font-family="Inter, Arial, sans-serif" font-weight="820">What the Operator keeps doing</text>
 
-  <circle cx="800" cy="500" r="250" stroke="#8EEBFF" stroke-opacity="0.24" stroke-width="3" stroke-dasharray="14 16">
+  <circle cx="800" cy="500" r="286" stroke="#8EEBFF" stroke-opacity="0.24" stroke-width="3" stroke-dasharray="14 16">
     <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 800 500" to="360 800 500" dur="18s" repeatCount="indefinite"/>
   </circle>
 
   <g filter="url(#shadow)">
     <rect x="650" y="390" width="300" height="220" rx="34" fill="rgba(88,69,170,0.36)" stroke="#B4A6FF" stroke-width="2.2"/>
-    <text x="708" y="470" fill="#FFFFFF" font-size="54" font-family="Inter, Arial, sans-serif" font-weight="860">Operator</text>
-    <text x="702" y="518" fill="#D7CFFF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="720">Continuous reconciliation</text>
+    <text x="800" y="470" fill="#FFFFFF" font-size="54" font-family="Inter, Arial, sans-serif" font-weight="860" text-anchor="middle">Operator</text>
+    <text x="800" y="518" fill="#D7CFFF" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="720" text-anchor="middle">Continuous reconciliation</text>
   </g>
 
   <g filter="url(#shadow)">
@@ -43,13 +43,13 @@
     <text x="430" y="510" fill="#ECE7FF" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="820" text-anchor="middle">Correct</text>
   </g>
 
-  <path d="M800 274C970 274 1170 330 1170 500" stroke="#8EEBFF" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
-  <path d="M1170 500C1170 660 970 772 800 772" stroke="#67E7B7" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
-  <path d="M800 772C620 772 430 660 430 500" stroke="#FFD874" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
-  <path d="M430 500C430 330 620 274 800 274" stroke="#A493FF" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+  <path d="M800 274C996 274 1170 356 1170 500" stroke="#8EEBFF" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+  <path d="M1170 500C1170 644 996 772 800 772" stroke="#67E7B7" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+  <path d="M800 772C604 772 430 644 430 500" stroke="#FFD874" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+  <path d="M430 500C430 356 604 274 800 274" stroke="#A493FF" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
 
-  <circle r="10" fill="#95EFFF"><animateMotion dur="4.3s" repeatCount="indefinite" path="M800 274C970 274 1170 330 1170 500"/></circle>
-  <circle r="10" fill="#76ECC2"><animateMotion dur="4.2s" repeatCount="indefinite" path="M1170 500C1170 660 970 772 800 772"/></circle>
-  <circle r="10" fill="#FFE591"><animateMotion dur="4.5s" repeatCount="indefinite" path="M800 772C620 772 430 660 430 500"/></circle>
-  <circle r="10" fill="#C8BCFF"><animateMotion dur="4.6s" repeatCount="indefinite" path="M430 500C430 330 620 274 800 274"/></circle>
+  <circle r="10" fill="#95EFFF"><animateMotion dur="4.3s" repeatCount="indefinite" path="M800 274C996 274 1170 356 1170 500"/></circle>
+  <circle r="10" fill="#76ECC2"><animateMotion dur="4.2s" repeatCount="indefinite" path="M1170 500C1170 644 996 772 800 772"/></circle>
+  <circle r="10" fill="#FFE591"><animateMotion dur="4.5s" repeatCount="indefinite" path="M800 772C604 772 430 644 430 500"/></circle>
+  <circle r="10" fill="#C8BCFF"><animateMotion dur="4.6s" repeatCount="indefinite" path="M430 500C430 356 604 274 800 274"/></circle>
 </svg>
