@@ -3,36 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpenTelemetry Operator：人人都能看懂的云原生观测自动化</title>
-  <meta name="description" content="通俗易懂地介绍 OpenTelemetry Operator：它是什么、解决什么问题、如何工作、适合哪些场景。" />
+  <title>OpenTelemetry Operator：一页看懂 Kubernetes 里的观测自动化</title>
+  <meta name="description" content="用通俗语言介绍 OpenTelemetry Operator：它是什么、为什么需要、怎么工作、如何安装、如何编写 CRD。" />
   <style>
     :root {
-      --bg: #08111f;
-      --bg-soft: #0d1830;
-      --panel: rgba(16, 26, 49, 0.72);
-      --panel-strong: rgba(20, 32, 60, 0.92);
-      --line: rgba(160, 195, 255, 0.18);
-      --text: #ecf3ff;
-      --muted: #a9bcdf;
-      --accent: #6ce5ff;
-      --accent-2: #8f7cff;
-      --green: #53e6b5;
+      --bg: #08111d;
+      --bg-2: #0b1728;
+      --panel: rgba(10, 20, 36, 0.84);
+      --panel-soft: rgba(14, 26, 47, 0.72);
+      --border: rgba(129, 182, 255, 0.18);
+      --text: #eef5ff;
+      --muted: #a8bbd8;
+      --cyan: #6ce5ff;
+      --blue: #5fa8ff;
+      --violet: #8b84ff;
+      --green: #6ae7bc;
       --yellow: #ffd66b;
-      --shadow: 0 30px 80px rgba(0,0,0,.35);
+      --danger: #ff9d8c;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
       --radius: 24px;
+      --radius-sm: 18px;
       --max: 1180px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(108, 229, 255, 0.16), transparent 30%),
-        radial-gradient(circle at top right, rgba(143, 124, 255, 0.18), transparent 24%),
-        linear-gradient(180deg, #07101c 0%, #0a1323 35%, #08111f 100%);
       color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(108,229,255,.12), transparent 30%),
+        radial-gradient(circle at 88% 10%, rgba(95,168,255,.14), transparent 28%),
+        linear-gradient(180deg, #07101a 0%, #091321 34%, #08111d 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.65;
     }
 
@@ -40,182 +44,629 @@
       content: "";
       position: fixed;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: linear-gradient(180deg, rgba(255,255,255,.65), transparent 92%);
       pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: linear-gradient(180deg, rgba(255,255,255,.58), transparent 90%);
     }
 
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
+    code, pre { font-family: var(--mono); }
     .wrap { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; }
 
     .nav {
-      position: sticky; top: 0; z-index: 20;
+      position: sticky;
+      top: 0;
+      z-index: 50;
       backdrop-filter: blur(18px);
-      background: rgba(8, 17, 31, 0.6);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(8, 17, 29, 0.66);
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
     .nav-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; padding: 14px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
     }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .02em; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
     .brand-mark {
-      width: 38px; height: 38px; border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 12px 30px rgba(108,229,255,.35);
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
       position: relative;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      box-shadow: 0 12px 28px rgba(108,229,255,.28);
     }
-    .brand-mark::before, .brand-mark::after {
-      content: ""; position: absolute; inset: 8px; border-radius: 10px; border: 2px solid rgba(255,255,255,.92);
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      border: 2px solid rgba(255,255,255,.92);
+      border-radius: 10px;
+      inset: 8px;
     }
-    .brand-mark::after { inset: 14px; border-radius: 7px; border-color: rgba(255,255,255,.65); }
-    .nav-links { display: flex; flex-wrap: wrap; gap: 18px; color: var(--muted); font-size: 14px; }
+    .brand-mark::after {
+      inset: 14px;
+      border-radius: 7px;
+      border-color: rgba(255,255,255,.6);
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
 
-    .hero { padding: 72px 0 44px; position: relative; overflow: hidden; }
-    .hero-grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: 32px; align-items: center; }
+    .hero {
+      padding: 76px 0 34px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(26px);
+      opacity: .55;
+      animation: drift 9s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    .hero::before {
+      width: 240px;
+      height: 240px;
+      top: 40px;
+      left: -60px;
+      background: rgba(108,229,255,.18);
+    }
+    .hero::after {
+      width: 280px;
+      height: 280px;
+      right: -90px;
+      top: 10px;
+      background: rgba(139,132,255,.14);
+      animation-duration: 11s;
+    }
+    @keyframes drift {
+      from { transform: translateY(0) translateX(0) scale(1); }
+      to { transform: translateY(12px) translateX(18px) scale(1.08); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: .95; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+    @keyframes scan {
+      from { transform: translateY(-110%); }
+      to { transform: translateY(260%); }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 30px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px;
-      border-radius: 999px; background: rgba(108, 229, 255, .10); border: 1px solid rgba(108,229,255,.18);
-      color: #c5f7ff; font-size: 14px; margin-bottom: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(108,229,255,.18);
+      background: rgba(108,229,255,.08);
+      color: #c7f7ff;
+      font-size: 14px;
+      margin-bottom: 16px;
     }
     h1 {
-      margin: 0; font-size: clamp(40px, 6vw, 76px); line-height: .98; letter-spacing: -.04em;
+      margin: 0;
+      font-size: clamp(40px, 6vw, 74px);
+      line-height: .98;
+      letter-spacing: -.045em;
       text-wrap: balance;
     }
-    .hero p.lead {
-      color: var(--muted); font-size: clamp(18px, 2.2vw, 22px); max-width: 680px; margin: 22px 0 0;
+    .lead {
+      color: var(--muted);
+      font-size: clamp(18px, 2.2vw, 22px);
+      max-width: 700px;
+      margin: 22px 0 0;
     }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 26px;
+    }
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      min-height: 48px; padding: 0 18px; border-radius: 999px; font-weight: 700;
-      border: 1px solid transparent; transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
     }
     .btn:hover { transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), #77b5ff); color: #062131; box-shadow: 0 16px 38px rgba(108,229,255,.22); }
-    .btn-secondary { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); color: var(--text); }
-
-    .hero-card, .panel {
-      background: linear-gradient(180deg, rgba(15, 24, 45, 0.86), rgba(10, 18, 34, 0.92));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+    .btn-primary {
+      color: #062131;
+      background: linear-gradient(135deg, var(--cyan), #87c0ff);
+      box-shadow: 0 16px 36px rgba(108,229,255,.22);
     }
-    .hero-card { padding: 20px; position: relative; overflow: hidden; }
+    .btn-secondary {
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.08);
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: #d7e5ff;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .hero-card,
+    .panel,
+    .card,
+    .code-card,
+    .quick-grid > div,
+    .faq details {
+      background: linear-gradient(180deg, rgba(13,22,39,.9), rgba(9,16,29,.94));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+    .hero-card {
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
     .hero-card::before {
-      content: ""; position: absolute; inset: auto -20% -25% auto; width: 240px; height: 240px;
-      background: radial-gradient(circle, rgba(108,229,255,.24), transparent 60%);
-      filter: blur(14px);
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, transparent 28%, rgba(255,255,255,.07) 48%, transparent 68%);
+      transform: translateX(-130%);
+      animation: scan 7s linear infinite;
+      pointer-events: none;
+    }
+    .hero-diagram {
+      position: relative;
+      min-height: 370px;
+      border-radius: 22px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(108,229,255,.12), transparent 28%),
+        radial-gradient(circle at 80% 18%, rgba(139,132,255,.12), transparent 24%),
+        linear-gradient(180deg, rgba(13,24,43,.96), rgba(8,15,28,.98));
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .hero-diagram .ring {
+      position: absolute;
+      inset: 50%;
+      width: 280px;
+      height: 280px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px dashed rgba(129,182,255,.32);
+      animation: pulse 5s ease-in-out infinite;
+    }
+    .hero-diagram .core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 220px;
+      height: 110px;
+      transform: translate(-50%, -50%);
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 12px;
+      background: linear-gradient(135deg, rgba(108,229,255,.16), rgba(95,168,255,.18));
+      border: 1px solid rgba(108,229,255,.28);
+      box-shadow: 0 20px 44px rgba(108,229,255,.12);
+      z-index: 3;
+    }
+    .hero-diagram .core strong { display: block; font-size: 22px; }
+    .hero-diagram .core span { color: #cae9ff; font-size: 13px; }
+    .node {
+      position: absolute;
+      width: 132px;
+      min-height: 90px;
+      padding: 14px 12px;
+      border-radius: 20px;
+      background: rgba(15,27,48,.92);
+      border: 1px solid rgba(255,255,255,.08);
+      text-align: center;
+      display: grid;
+      align-content: center;
+      gap: 6px;
+      z-index: 2;
+    }
+    .node strong { font-size: 16px; }
+    .node span { color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .node.top { top: 28px; left: 50%; transform: translateX(-50%); }
+    .node.left { left: 20px; top: 50%; transform: translateY(-50%); }
+    .node.right { right: 20px; top: 50%; transform: translateY(-50%); }
+    .node.bottom { bottom: 20px; left: 50%; transform: translateX(-50%); }
+    .connector {
+      position: absolute;
+      background: linear-gradient(90deg, rgba(108,229,255,.76), rgba(139,132,255,.76));
+      z-index: 1;
+      opacity: .92;
+      box-shadow: 0 0 14px rgba(108,229,255,.16);
+    }
+    .connector.h1 { left: 152px; top: 184px; width: 228px; height: 2px; }
+    .connector.h2 { right: 152px; top: 184px; width: 228px; height: 2px; }
+    .connector.v1 { left: 50%; top: 118px; width: 2px; height: 78px; transform: translateX(-50%); }
+    .connector.v2 { left: 50%; bottom: 108px; width: 2px; height: 78px; transform: translateX(-50%); }
+    .signal {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 0 18px rgba(255,255,255,.7);
+    }
+    .signal.s1 { left: 265px; top: 179px; animation: flowx 4s linear infinite; }
+    .signal.s2 { right: 265px; top: 179px; animation: flowx2 4.5s linear infinite; }
+    .signal.s3 { left: calc(50% - 5px); top: 150px; animation: flowy 4.2s linear infinite; }
+    .signal.s4 { left: calc(50% - 5px); bottom: 140px; animation: flowy2 4.2s linear infinite; }
+    @keyframes flowx {
+      0% { transform: translateX(-70px); opacity: 0; }
+      20%, 80% { opacity: 1; }
+      100% { transform: translateX(150px); opacity: 0; }
+    }
+    @keyframes flowx2 {
+      0% { transform: translateX(70px); opacity: 0; }
+      20%, 80% { opacity: 1; }
+      100% { transform: translateX(-150px); opacity: 0; }
+    }
+    @keyframes flowy {
+      0% { transform: translateY(-36px); opacity: 0; }
+      20%, 80% { opacity: 1; }
+      100% { transform: translateY(42px); opacity: 0; }
+    }
+    @keyframes flowy2 {
+      0% { transform: translateY(36px); opacity: 0; }
+      20%, 80% { opacity: 1; }
+      100% { transform: translateY(-42px); opacity: 0; }
     }
     .hero-meta {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px;
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
     .metric {
-      padding: 16px; border-radius: 18px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.06);
     }
-    .metric strong { display: block; font-size: 28px; line-height: 1.1; }
-    .metric span { color: var(--muted); font-size: 13px; }
+    .metric strong { display: block; font-size: 27px; line-height: 1.1; }
+    .metric span { display: block; color: var(--muted); font-size: 13px; margin-top: 6px; }
 
-    section { padding: 34px 0; }
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 22px;
+    }
+    .quick-grid > div {
+      padding: 18px 18px 16px;
+      border-radius: 20px;
+    }
+    .quick-grid strong {
+      display: block;
+      color: var(--cyan);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 8px;
+    }
+    .quick-grid p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    section { padding: 36px 0; }
     .section-head { margin-bottom: 24px; }
-    .section-kicker { color: var(--accent); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
-    h2 { margin: 10px 0 0; font-size: clamp(28px, 4vw, 44px); line-height: 1.04; letter-spacing: -.03em; }
-    .section-desc { color: var(--muted); max-width: 780px; margin-top: 14px; font-size: 18px; }
+    .section-kicker {
+      color: var(--cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 12px;
+    }
+    h2 {
+      margin: 10px 0 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.04;
+      letter-spacing: -.03em;
+    }
+    .section-desc {
+      max-width: 800px;
+      color: var(--muted);
+      margin-top: 14px;
+      font-size: 18px;
+    }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .grid-3, .grid-2 {
+      display: grid;
+      gap: 20px;
+    }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
     .card {
-      padding: 24px; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow);
+      padding: 24px;
+      border-radius: 22px;
+      background: var(--panel-soft);
       backdrop-filter: blur(12px);
     }
     .card h3 { margin: 14px 0 10px; font-size: 22px; }
     .card p { margin: 0; color: var(--muted); }
     .icon {
-      width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
-      background: linear-gradient(135deg, rgba(108,229,255,.18), rgba(143,124,255,.18));
-      border: 1px solid rgba(255,255,255,.08); font-size: 24px;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      font-size: 24px;
+      background: linear-gradient(135deg, rgba(108,229,255,.18), rgba(139,132,255,.18));
+      border: 1px solid rgba(255,255,255,.08);
     }
 
     .story {
-      display: grid; grid-template-columns: .95fr 1.05fr; gap: 28px; align-items: center;
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 28px;
+      align-items: center;
     }
-    .story-copy ul { padding-left: 18px; color: var(--muted); }
-    .story-copy li + li { margin-top: 10px; }
+    .story-copy ul,
+    .compare-box ul,
+    .faq p,
+    .step p {
+      color: var(--muted);
+    }
+    .story-copy ul, .compare-box ul { padding-left: 18px; }
+    .story-copy li + li, .compare-box li + li { margin-top: 10px; }
     .story-visual { padding: 20px; }
-
     .callout {
-      padding: 22px; border-radius: 20px; background: linear-gradient(180deg, rgba(83,230,181,.10), rgba(83,230,181,.02));
-      border: 1px solid rgba(83,230,181,.2); color: #dcfff3; margin-top: 18px;
+      margin-top: 18px;
+      padding: 22px;
+      border-radius: 20px;
+      color: #dcfff3;
+      border: 1px solid rgba(106,231,188,.2);
+      background: linear-gradient(180deg, rgba(106,231,188,.10), rgba(106,231,188,.02));
     }
 
     .timeline { display: grid; gap: 18px; }
     .step {
-      display: grid; grid-template-columns: 58px 1fr; gap: 16px; align-items: start;
-      padding: 20px; border-radius: 20px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
     }
     .step-badge {
-      width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; font-weight: 800;
-      background: linear-gradient(135deg, rgba(108,229,255,.22), rgba(143,124,255,.22)); color: white;
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      font-weight: 800;
+      background: linear-gradient(135deg, rgba(108,229,255,.24), rgba(139,132,255,.22));
     }
     .step h3 { margin: 2px 0 8px; font-size: 21px; }
-    .step p { margin: 0; color: var(--muted); }
+    .step p { margin: 0; }
 
     .compare {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
     }
     .compare-box {
-      padding: 22px; border-radius: 20px; border: 1px solid rgba(255,255,255,.07); background: rgba(255,255,255,.03);
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
     }
-    .compare-box h3 { margin-top: 0; }
-    .compare-box ul { margin: 0; padding-left: 18px; color: var(--muted); }
-    .compare-box li + li { margin-top: 8px; }
+    .compare-box h3 { margin: 0 0 10px; }
 
-    .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
     .chip {
-      padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: #dce9ff; font-size: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      color: #dce9ff;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
     }
 
+    .cncf-band {
+      display: grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .cncf-copy,
+    .cncf-diagram {
+      padding: 24px;
+    }
+    .cncf-points {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .cncf-points div {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .cncf-points strong { display: block; margin-bottom: 6px; }
+    .cncf-points span { color: var(--muted); font-size: 15px; }
+    .mini-arch {
+      display: grid;
+      gap: 12px;
+      align-content: center;
+      height: 100%;
+    }
+    .mini-arch .row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .mini-arch .box,
+    .mini-arch .center {
+      padding: 14px;
+      min-height: 92px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+    .mini-arch .center {
+      min-height: 120px;
+      background: linear-gradient(135deg, rgba(108,229,255,.14), rgba(95,168,255,.15));
+      border-color: rgba(108,229,255,.22);
+    }
+    .mini-arch small { color: var(--muted); font-size: 12px; display: block; margin-top: 6px; }
+
+    .code-section {
+      display: grid;
+      gap: 20px;
+    }
+    .code-card {
+      overflow: hidden;
+    }
+    .code-head {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      color: #dce8ff;
+      font-size: 14px;
+      background: rgba(255,255,255,.02);
+    }
+    .dots { display: flex; gap: 8px; }
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: block;
+    }
+    .dots span:nth-child(1) { background: #ff8b7b; }
+    .dots span:nth-child(2) { background: #ffd66b; }
+    .dots span:nth-child(3) { background: #6ae7bc; }
+    pre {
+      margin: 0;
+      overflow: auto;
+      padding: 18px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #dce9ff;
+      background: rgba(8,14,26,.68);
+    }
+    .explain {
+      padding: 18px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.02);
+    }
+
+    .takeaways {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
     .faq { display: grid; gap: 16px; }
-    details {
-      border: 1px solid rgba(255,255,255,.08); border-radius: 18px; background: rgba(255,255,255,.03); padding: 18px 20px;
-    }
-    summary { cursor: pointer; font-weight: 700; }
-    details p { color: var(--muted); margin: 14px 0 0; }
+    .faq details { padding: 18px 20px; }
+    .faq summary { cursor: pointer; font-weight: 700; }
+    .faq p { margin: 14px 0 0; }
 
-    footer { padding: 32px 0 60px; color: var(--muted); }
+    footer {
+      padding: 34px 0 64px;
+      color: var(--muted);
+    }
     .footer-panel {
-      padding: 26px; border-radius: 24px; background: linear-gradient(180deg, rgba(14,23,42,.92), rgba(8,15,28,.92)); border: 1px solid var(--line);
-      display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 26px;
     }
 
-    .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
-    .badge {
-      border-radius: 999px; padding: 8px 12px; font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
-      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); color: #d3e1fb;
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid, .story, .grid-3, .grid-2, .compare { grid-template-columns: 1fr; }
+    @media (max-width: 1040px) {
+      .hero-grid,
+      .story,
+      .cncf-band,
+      .grid-3,
+      .grid-2,
+      .compare,
+      .takeaways,
+      .quick-grid { grid-template-columns: 1fr; }
       .hero-meta { grid-template-columns: 1fr; }
-      .nav-inner { align-items: flex-start; }
+      .mini-arch .row { grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 640px) {
-      .hero { padding-top: 46px; }
-      h1 { font-size: 40px; }
+    @media (max-width: 720px) {
       .wrap { width: min(var(--max), calc(100% - 20px)); }
-      .card, .panel, .hero-card { padding: 18px; }
+      .nav-inner { align-items: flex-start; }
+      .hero { padding-top: 48px; }
+      .hero-diagram { min-height: 440px; }
+      .node { width: 116px; }
+      .node.left { top: 58%; }
+      .node.right { top: 58%; }
+      .connector.h1, .connector.h2 { width: 150px; }
+      .card, .panel, .hero-card, .cncf-copy, .cncf-diagram { padding: 18px; }
       .step { grid-template-columns: 48px 1fr; }
       .step-badge { width: 48px; height: 48px; border-radius: 14px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .btn { transition: none; }
+      .btn, .hero::before, .hero::after, .hero-card::before, .hero-diagram .ring, .signal { animation: none !important; }
     }
   </style>
 </head>
@@ -229,8 +680,8 @@
       <div class="nav-links">
         <a href="#what">它是什么</a>
         <a href="#how">怎么工作</a>
-        <a href="#why">为什么需要</a>
-        <a href="#scenes">适用场景</a>
+        <a href="#install">如何安装</a>
+        <a href="#crd">CRD 示例</a>
         <a href="#faq">FAQ</a>
       </div>
     </div>
@@ -239,12 +690,12 @@
   <header class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow">Kubernetes 里的“自动化运维助手”</div>
-        <h1>让 OpenTelemetry<br/>不再难部署、难维护</h1>
-        <p class="lead">如果把 OpenTelemetry Collector 比作“遥测数据收集员”，那么 OpenTelemetry Operator 就是“自动招人、排班、发装备、持续巡检的主管”。它把原本麻烦的 Kubernetes 配置，变成更稳定、更自动化的日常操作。</p>
+        <div class="eyebrow">Kubernetes 里的“观测自动化主管”</div>
+        <h1>让 OpenTelemetry<br/>在 Kubernetes 中更容易落地</h1>
+        <p class="lead">如果把 OpenTelemetry Collector 比作“遥测数据收集员”，那么 OpenTelemetry Operator 就像“自动招人、排班、发装备、持续巡检的主管”。它把原本繁琐的 Kubernetes 部署与维护，变成更标准化、更稳定的日常操作。</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#what">3 分钟看懂它</a>
-          <a class="btn btn-secondary" href="#faq">先看常见问题</a>
+          <a class="btn btn-secondary" href="#install">直接看安装示例</a>
         </div>
         <div class="badge-row">
           <div class="badge">Traces</div>
@@ -252,23 +703,75 @@
           <div class="badge">Logs</div>
           <div class="badge">Kubernetes</div>
           <div class="badge">Operator Pattern</div>
+          <div class="badge">Cloud Native</div>
+        </div>
+
+        <div class="quick-grid">
+          <div>
+            <strong>解决的问题</strong>
+            <p>把 Collector 的部署、升级、注入、维护统一自动化。</p>
+          </div>
+          <div>
+            <strong>最适合</strong>
+            <p>多服务、多环境、多人协作的 Kubernetes 平台。</p>
+          </div>
+          <div>
+            <strong>核心价值</strong>
+            <p>减少重复 YAML，降低变更风险，提高一致性。</p>
+          </div>
+          <div>
+            <strong>一句话</strong>
+            <p>你声明目标，Operator 负责把目标变成现实。</p>
+          </div>
         </div>
       </div>
 
       <div class="hero-card">
-        <img src="assets/hero-telemetry.svg" alt="OpenTelemetry Operator 控制 Kubernetes 中 Collector 和遥测信号流动的示意图" />
+        <div class="hero-diagram" aria-label="OpenTelemetry Operator 动态示意图">
+          <div class="ring"></div>
+          <div class="node top">
+            <strong>Applications</strong>
+            <span>应用产生 traces、metrics、logs</span>
+          </div>
+          <div class="node left">
+            <strong>Kubernetes</strong>
+            <span>Deployment / DaemonSet / Service</span>
+          </div>
+          <div class="node right">
+            <strong>Backends</strong>
+            <span>Jaeger · Tempo · Prometheus · APM</span>
+          </div>
+          <div class="node bottom">
+            <strong>Collector</strong>
+            <span>接收、处理、转发遥测数据</span>
+          </div>
+          <div class="core">
+            <div>
+              <strong>OTel Operator</strong>
+              <span>监听 CRD · 自动部署 · 持续协调</span>
+            </div>
+          </div>
+          <div class="connector h1"></div>
+          <div class="connector h2"></div>
+          <div class="connector v1"></div>
+          <div class="connector v2"></div>
+          <div class="signal s1"></div>
+          <div class="signal s2"></div>
+          <div class="signal s3"></div>
+          <div class="signal s4"></div>
+        </div>
         <div class="hero-meta">
           <div class="metric">
             <strong>自动化</strong>
-            <span>把部署、升级、注入、维护交给 Operator</span>
+            <span>把部署、升级、自动注入、维护交给 Operator。</span>
           </div>
           <div class="metric">
             <strong>标准化</strong>
-            <span>团队不再各写各的 Collector YAML</span>
+            <span>团队不再各写各的 Collector 配置和安装脚本。</span>
           </div>
           <div class="metric">
             <strong>可扩展</strong>
-            <span>随业务增长而演进的遥测管道</span>
+            <span>随着业务增长，遥测管道可以更稳地演进。</span>
           </div>
         </div>
       </div>
@@ -281,7 +784,7 @@
         <div class="section-head">
           <div class="section-kicker">What</div>
           <h2>OpenTelemetry Operator 到底是什么？</h2>
-          <p class="section-desc">一句话：它是运行在 Kubernetes 里的控制器，专门帮你自动部署和管理 OpenTelemetry 相关组件，尤其是 Collector 和自动注入能力。</p>
+          <p class="section-desc">一句话：它是运行在 Kubernetes 中的控制器，专门帮助你自动部署和管理 OpenTelemetry 相关组件，尤其是 Collector 以及自动注入探针能力。</p>
         </div>
 
         <div class="grid-3">
@@ -293,7 +796,7 @@
           <article class="card">
             <div class="icon">🤖</div>
             <h3>它是一种自动化机制</h3>
-            <p>你只需要声明“我想要一个 Collector”，Operator 就会在后台帮你创建 Deployment、DaemonSet、Service 等 Kubernetes 资源，而不是让你手写一大堆 YAML。</p>
+            <p>你只需要声明“我想要一个 Collector”，Operator 就会在后台替你创建 Deployment、DaemonSet、Service 等 Kubernetes 资源，而不是让你手写一大堆 YAML。</p>
           </article>
           <article class="card">
             <div class="icon">🧩</div>
@@ -304,19 +807,57 @@
       </div>
     </section>
 
+    <section>
+      <div class="wrap cncf-band">
+        <div class="cncf-copy panel">
+          <div class="section-kicker">Cloud Native Style</div>
+          <h2>更贴近 CNCF / Kubernetes 语境来理解它</h2>
+          <p class="section-desc">在云原生世界里，大家追求的是声明式、可重复、可扩展、平台化。OpenTelemetry Operator 恰好把“观测接入”这件事，也带进了这条标准路径。</p>
+          <div class="cncf-points">
+            <div>
+              <strong>声明式</strong>
+              <span>你描述想要的状态，而不是手工执行每一个命令。</span>
+            </div>
+            <div>
+              <strong>平台化</strong>
+              <span>平台团队可以统一提供观测能力，业务团队按规则接入。</span>
+            </div>
+            <div>
+              <strong>可演进</strong>
+              <span>从单个 Collector 到多 pipeline、多环境治理，路径更平滑。</span>
+            </div>
+          </div>
+        </div>
+        <div class="cncf-diagram panel">
+          <div class="mini-arch">
+            <div class="row">
+              <div class="box"><div><strong>应用服务</strong><small>产生遥测数据</small></div></div>
+              <div class="center"><div><strong>Operator</strong><small>持续监听 CRD，生成并维护资源</small></div></div>
+              <div class="box"><div><strong>观测后端</strong><small>Jaeger / Tempo / Prometheus / APM</small></div></div>
+            </div>
+            <div class="row">
+              <div class="box"><div><strong>Deployment</strong><small>适合网关模式</small></div></div>
+              <div class="box"><div><strong>DaemonSet</strong><small>适合节点级采集</small></div></div>
+              <div class="box"><div><strong>Sidecar / 注入</strong><small>适合细粒度控制</small></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="why">
       <div class="wrap story">
         <div class="story-copy">
           <div class="section-kicker">Why</div>
           <h2>为什么很多团队需要它？</h2>
-          <p class="section-desc">因为“观测系统”一旦进入生产环境，最大的痛点通常不是会不会写配置，而是：能不能持续、稳定、规模化地管理这些配置。</p>
+          <p class="section-desc">因为观测系统一旦进入生产环境，最大的痛点通常不是“会不会写配置”，而是“能不能持续、稳定、规模化地管理这些配置”。</p>
           <ul>
-            <li>没有 Operator 时，团队常常手工维护 Collector 的 YAML，升级和变更容易出错。</li>
+            <li>没有 Operator 时，团队常常手工维护 Collector YAML，升级和变更很容易出错。</li>
             <li>不同服务、不同命名空间、不同环境可能有不同采集方式，手动维护很快就会失控。</li>
-            <li>当应用越来越多时，你会希望自动注入 Agent / SDK、自动 rollout、自动修复，而不是靠人工执行。</li>
+            <li>当应用越来越多时，你往往希望自动注入 Agent 或 SDK、自动滚动更新、自动修复，而不是一直靠人工执行。</li>
           </ul>
           <div class="callout">
-            <strong>通俗比喻：</strong>没有 Operator，就像每开一家分店都要自己买设备、招人、拉网线、写制度；有了 Operator，就像总部把这些标准化，分店只要说“我要开业”，系统就自动把基础设施配齐。
+            <strong>通俗比喻：</strong>没有 Operator，就像每开一家分店都要自己买设备、招人、拉网线、写制度；有了 Operator，就像总部把这些流程标准化，分店只要说“我要开业”，系统就会自动把基础设施配齐。
           </div>
         </div>
         <div class="panel story-visual">
@@ -340,7 +881,7 @@
                 <div class="step-badge">1</div>
                 <div>
                   <h3>你声明需求</h3>
-                  <p>例如创建一个 `OpenTelemetryCollector` 自定义资源，告诉集群：我想要一个怎样的 Collector、跑几个副本、暴露什么端口、用什么 pipeline。</p>
+                  <p>例如创建一个 <code>OpenTelemetryCollector</code> 自定义资源，告诉集群：我想要怎样的 Collector、跑几个副本、暴露哪些端口、使用什么 pipeline。</p>
                 </div>
               </div>
               <div class="step">
@@ -382,8 +923,8 @@
                 <h3>Operator 负责</h3>
                 <ul>
                   <li>创建和更新资源</li>
-                  <li>让 Collector 按期望运行</li>
-                  <li>减少重复和人为错误</li>
+                  <li>让 Collector 按预期运行</li>
+                  <li>减少重复劳动和人为错误</li>
                 </ul>
               </div>
             </div>
@@ -409,22 +950,110 @@
           <article class="card">
             <div class="icon">🏭</div>
             <h3>平台工程 / SRE 团队</h3>
-            <p>当你希望“平台层”统一提供 telemetry 能力，而不是每个业务团队各自摸索时，Operator 是极好的标准化抓手。</p>
+            <p>当你希望平台层统一提供观测能力，而不是每个业务团队各自摸索时，Operator 是非常有效的标准化抓手。</p>
           </article>
           <article class="card">
             <div class="icon">📈</div>
             <h3>需要规模化演进的系统</h3>
-            <p>今天只有 traces，明天要加 metrics，后天要按命名空间拆分 pipeline——Operator 可以让这种演进过程更可控。</p>
+            <p>今天只有链路追踪，明天要加指标，后天要按命名空间拆分数据管道——Operator 能让这种演进过程更可控。</p>
           </article>
         </div>
 
         <div class="chips">
           <div class="chip">Collector 统一部署</div>
-          <div class="chip">自动注入 instrumentation</div>
+          <div class="chip">自动注入探针</div>
           <div class="chip">声明式配置</div>
           <div class="chip">批量升级更稳</div>
           <div class="chip">多环境一致性</div>
           <div class="chip">减少重复 YAML</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">Install</div>
+          <h2>如何安装它？</h2>
+          <p class="section-desc">如果你已经有 Kubernetes 集群，最常见的做法是先安装 cert-manager，再安装 OpenTelemetry Operator。下面给你一个便于理解的最小示意。</p>
+        </div>
+
+        <div class="code-section">
+          <div class="code-card">
+            <div class="code-head">
+              <span>示意安装流程</span>
+              <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+            <pre><code># 1) 安装 cert-manager（Operator 常见依赖）
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+
+# 2) 安装 OpenTelemetry Operator
+kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+
+# 3) 确认 Operator 已经运行
+kubectl get pods -n opentelemetry-operator-system
+
+# 4) 查看可用 CRD
+kubectl get crd | grep opentelemetry</code></pre>
+            <div class="explain">这段内容是为了帮助读者快速建立认知：先有 Operator，再通过 CRD 去声明你想要的 Collector。实际生产环境中，请结合你自己的版本管理、Helm 流程和变更规范来安装。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="crd">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">CRD Example</div>
+          <h2>一个最小可读的 CRD 示例</h2>
+          <p class="section-desc">下面这段 YAML 不求覆盖所有细节，但足够帮助第一次接触的人理解：你真正写给 Operator 的，不是 Deployment，而是更高层的意图。</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="code-card">
+            <div class="code-head">
+              <span>OpenTelemetryCollector 示例</span>
+              <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+            <pre><code>apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: demo-collector
+spec:
+  mode: deployment
+  replicas: 2
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc: {}
+          http: {}
+    processors:
+      batch: {}
+    exporters:
+      debug: {}
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug]</code></pre>
+            <div class="explain">核心理解：<code>mode</code> 决定部署形态，<code>config</code> 决定 Collector 内部 pipeline。你写的是“目标配置”，Operator 负责把它落到 Kubernetes 资源上。</div>
+          </div>
+
+          <div class="code-card">
+            <div class="code-head">
+              <span>怎么看这段配置</span>
+              <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+            <pre><code>receivers  → 从哪里接收数据
+processors → 中间怎么处理数据
+exporters  → 最终把数据送到哪里
+service    → 把上面这些组件拼成 pipeline
+mode       → Collector 以什么方式运行
+replicas   → 需要几个副本</code></pre>
+            <div class="explain">如果你之前已经用过单独的 OpenTelemetry Collector，就会发现这里的配置思路其实很接近；只是现在多了一层 Operator，帮你自动创建和维护运行环境。</div>
+          </div>
         </div>
       </div>
     </section>
@@ -435,21 +1064,21 @@
           <div class="section-kicker">Takeaway</div>
           <h2>记住这三个核心点，就已经入门了</h2>
         </div>
-        <div class="grid-3">
+        <div class="takeaways">
           <article class="card">
             <div class="icon">1️⃣</div>
             <h3>它是“管理者”</h3>
-            <p>OpenTelemetry Operator 管的是 Collector 和相关自动化能力，而不是替代 Collector 做数据采集。</p>
+            <p>OpenTelemetry Operator 管的是 Collector 和相关自动化能力，而不是替代 Collector 亲自做数据采集。</p>
           </article>
           <article class="card">
             <div class="icon">2️⃣</div>
             <h3>它把复杂操作声明化</h3>
-            <p>你表达“想要什么”，它处理“具体怎么做”，非常适合 Kubernetes 的管理哲学。</p>
+            <p>你表达“想要什么”，它处理“具体怎么做”，这和 Kubernetes 的声明式管理哲学高度一致。</p>
           </article>
           <article class="card">
             <div class="icon">3️⃣</div>
             <h3>它在规模化时最有价值</h3>
-            <p>集群越大、团队越多、变更越频繁，Operator 的价值越明显——因为它能把观测能力做成平台基础设施。</p>
+            <p>集群越大、团队越多、变更越频繁，它的价值越明显，因为它能把观测能力变成平台基础设施。</p>
           </article>
         </div>
       </div>
@@ -464,7 +1093,7 @@
         <div class="faq">
           <details open>
             <summary>OpenTelemetry Operator 和 OpenTelemetry Collector 有什么区别？</summary>
-            <p>Collector 是干活的：接收、处理、转发 telemetry 数据。Operator 是管理 Collector 的：部署它、更新它、让它在 Kubernetes 里稳定运行。</p>
+            <p>Collector 是干活的：接收、处理、转发遥测数据。Operator 是管理 Collector 的：部署它、更新它、让它在 Kubernetes 中稳定运行。</p>
           </details>
           <details>
             <summary>没有 Kubernetes，还需要 OpenTelemetry Operator 吗？</summary>
@@ -472,11 +1101,11 @@
           </details>
           <details>
             <summary>它是不是只适合超大公司？</summary>
-            <p>不是。只要你已经在用 Kubernetes，并且希望减少重复配置、统一观测接入，它就有价值。只是团队越大，收益通常越明显。</p>
+            <p>不是。只要你已经在使用 Kubernetes，并且希望减少重复配置、统一观测接入，它就有价值。只是团队越大，收益通常越明显。</p>
           </details>
           <details>
             <summary>什么时候不一定要用它？</summary>
-            <p>当你的环境非常简单、Collector 数量很少、变更频率低时，直接手动部署 Collector 也完全可行。Operator 更像是“为了长期维护而投资”的方案。</p>
+            <p>当你的环境非常简单、Collector 数量很少、变更频率很低时，直接手动部署 Collector 也完全可行。Operator 更像是“为了长期维护而投资”的方案。</p>
           </details>
         </div>
       </div>
@@ -484,14 +1113,14 @@
   </main>
 
   <footer>
-    <div class="wrap footer-panel">
+    <div class="wrap footer-panel panel">
       <div>
-        <strong style="display:block; font-size: 20px; margin-bottom: 6px; color: var(--text);">一句最后总结</strong>
+        <strong style="display:block; font-size:20px; margin-bottom:6px; color:var(--text);">一句话总结</strong>
         <div>OpenTelemetry Operator 的价值，不在于“让遥测变得神奇”，而在于把遥测系统变成一种可复制、可维护、可规模化运营的基础设施能力。</div>
       </div>
-      <div style="max-width: 280px;">
-        <strong style="display:block; font-size: 16px; margin-bottom: 8px; color: var(--text);">适合作为 GitHub Pages 首页</strong>
-        <div>单文件静态页面，无需构建，推送到仓库后即可启用 Pages。</div>
+      <div style="max-width:300px;">
+        <strong style="display:block; font-size:16px; margin-bottom:8px; color:var(--text);">适合作为 GitHub Pages 首页</strong>
+        <div>纯静态 HTML 页面，无需构建，推送到仓库后即可直接发布。</div>
       </div>
     </div>
   </footer>
