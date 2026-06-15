@@ -1,0 +1,78 @@
+<svg width="1200" height="860" viewBox="0 0 1200 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="90" x2="1050" y2="780" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0E1C36"/>
+      <stop offset="1" stop-color="#09101E"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="189" y1="151" x2="1001" y2="675" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#79F2FF"/>
+      <stop offset="1" stop-color="#8D82FF"/>
+    </linearGradient>
+    <filter id="blurGlow" x="-100" y="-100" width="1400" height="1060" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="34"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="860" rx="36" fill="url(#bg)"/>
+  <g opacity="0.22" stroke="#9BC5FF">
+    <path d="M90 108H1110"/>
+    <path d="M90 216H1110"/>
+    <path d="M90 324H1110"/>
+    <path d="M90 432H1110"/>
+    <path d="M90 540H1110"/>
+    <path d="M90 648H1110"/>
+    <path d="M90 756H1110"/>
+    <path d="M174 60V800"/>
+    <path d="M342 60V800"/>
+    <path d="M510 60V800"/>
+    <path d="M678 60V800"/>
+    <path d="M846 60V800"/>
+    <path d="M1014 60V800"/>
+  </g>
+  <g filter="url(#blurGlow)">
+    <circle cx="274" cy="180" r="110" fill="#6CE5FF" fill-opacity="0.22"/>
+    <circle cx="930" cy="220" r="130" fill="#8F7CFF" fill-opacity="0.20"/>
+    <circle cx="742" cy="635" r="150" fill="#53E6B5" fill-opacity="0.14"/>
+  </g>
+
+  <rect x="408" y="120" width="384" height="162" rx="28" fill="#101D37" stroke="#7EB6FF" stroke-opacity="0.28" stroke-width="2"/>
+  <text x="600" y="178" text-anchor="middle" fill="#EAF2FF" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800">OpenTelemetry Operator</text>
+  <text x="600" y="217" text-anchor="middle" fill="#A9BCDF" font-family="Inter,Arial,sans-serif" font-size="18">监听声明式资源 → 自动部署与维护 Collector</text>
+  <rect x="510" y="233" width="180" height="18" rx="9" fill="url(#cyan)" fill-opacity="0.9"/>
+
+  <rect x="120" y="370" width="270" height="170" rx="26" fill="#101B33" stroke="#6CE5FF" stroke-opacity="0.26" stroke-width="2"/>
+  <text x="155" y="420" fill="#EAF2FF" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="700">Applications</text>
+  <text x="155" y="455" fill="#A9BCDF" font-family="Inter,Arial,sans-serif" font-size="17">业务服务产生 traces / metrics / logs</text>
+  <circle cx="180" cy="495" r="12" fill="#6CE5FF"/>
+  <circle cx="220" cy="495" r="12" fill="#53E6B5"/>
+  <circle cx="260" cy="495" r="12" fill="#FFD66B"/>
+  <rect x="155" y="515" width="198" height="10" rx="5" fill="#223960"/>
+
+  <rect x="470" y="400" width="260" height="210" rx="28" fill="#111E38" stroke="#8F7CFF" stroke-opacity="0.30" stroke-width="2"/>
+  <text x="600" y="452" text-anchor="middle" fill="#EAF2FF" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="700">Collector Pods</text>
+  <rect x="520" y="485" width="160" height="26" rx="13" fill="#1A2D52"/>
+  <rect x="520" y="530" width="160" height="26" rx="13" fill="#1A2D52"/>
+  <rect x="520" y="575" width="160" height="26" rx="13" fill="#1A2D52"/>
+  <text x="600" y="503" text-anchor="middle" fill="#D8E7FF" font-family="Inter,Arial,sans-serif" font-size="14">receiver → processor → exporter</text>
+  <text x="600" y="548" text-anchor="middle" fill="#D8E7FF" font-family="Inter,Arial,sans-serif" font-size="14">统一采集与转换</text>
+  <text x="600" y="593" text-anchor="middle" fill="#D8E7FF" font-family="Inter,Arial,sans-serif" font-size="14">升级、扩缩容、重建</text>
+
+  <rect x="845" y="370" width="240" height="170" rx="26" fill="#101B33" stroke="#53E6B5" stroke-opacity="0.25" stroke-width="2"/>
+  <text x="965" y="420" text-anchor="middle" fill="#EAF2FF" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="700">Backends</text>
+  <text x="965" y="455" text-anchor="middle" fill="#A9BCDF" font-family="Inter,Arial,sans-serif" font-size="17">Jaeger · Prometheus · Tempo · Vendor APM</text>
+  <rect x="890" y="495" width="150" height="12" rx="6" fill="#53E6B5" fill-opacity="0.85"/>
+  <rect x="890" y="520" width="106" height="12" rx="6" fill="#6CE5FF" fill-opacity="0.82"/>
+
+  <rect x="270" y="655" width="660" height="96" rx="22" fill="#0F1930" stroke="#9BC5FF" stroke-opacity="0.18" stroke-width="2"/>
+  <text x="600" y="706" text-anchor="middle" fill="#EAF2FF" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="700">像一个“自动化主管”：你声明目标，它负责把遥测基础设施配齐并保持运行</text>
+
+  <g stroke="url(#cyan)" stroke-width="4" stroke-linecap="round">
+    <path d="M391 455C449 455 460 455 518 455"/>
+    <path d="M729 455C784 455 801 455 846 455"/>
+    <path d="M600 282V386"/>
+  </g>
+  <g fill="#DDF6FF">
+    <circle cx="444" cy="455" r="7"/>
+    <circle cx="782" cy="455" r="7"/>
+    <circle cx="600" cy="336" r="7"/>
+  </g>
+</svg>

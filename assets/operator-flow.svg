@@ -1,0 +1,53 @@
+<svg width="1200" height="880" viewBox="0 0 1200 880" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg3" x1="94" y1="89" x2="1043" y2="806" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0D1932"/>
+      <stop offset="1" stop-color="#09101D"/>
+    </linearGradient>
+    <linearGradient id="line3" x1="170" y1="160" x2="1020" y2="730" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6CE5FF"/>
+      <stop offset="1" stop-color="#8F7CFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="880" rx="34" fill="url(#bg3)"/>
+  <text x="600" y="84" text-anchor="middle" fill="#EEF4FF" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="800">OpenTelemetry Operator 工作流</text>
+
+  <g>
+    <rect x="115" y="170" width="970" height="114" rx="28" fill="#111C35" stroke="#89C5FF" stroke-opacity="0.18" stroke-width="2"/>
+    <circle cx="178" cy="227" r="26" fill="#182B50" stroke="#6CE5FF" stroke-width="2"/>
+    <text x="178" y="235" text-anchor="middle" fill="#EFF8FF" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="800">1</text>
+    <text x="238" y="214" fill="#EEF4FF" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="750">声明资源</text>
+    <text x="238" y="248" fill="#A9BCDF" font-family="Inter,Arial,sans-serif" font-size="18">你创建 OpenTelemetryCollector 等自定义资源，写明期望的部署模式与 pipeline。</text>
+  </g>
+
+  <g>
+    <rect x="115" y="336" width="970" height="114" rx="28" fill="#111C35" stroke="#89C5FF" stroke-opacity="0.18" stroke-width="2"/>
+    <circle cx="178" cy="393" r="26" fill="#182B50" stroke="#53E6B5" stroke-width="2"/>
+    <text x="178" y="401" text-anchor="middle" fill="#EFF8FF" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="800">2</text>
+    <text x="238" y="380" fill="#EEF4FF" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="750">监听并协调</text>
+    <text x="238" y="414" fill="#A9BCDF" font-family="Inter,Arial,sans-serif" font-size="18">Operator 持续观察集群状态，发现新增、修改、删除后立即开始 reconcile。</text>
+  </g>
+
+  <g>
+    <rect x="115" y="502" width="970" height="114" rx="28" fill="#111C35" stroke="#89C5FF" stroke-opacity="0.18" stroke-width="2"/>
+    <circle cx="178" cy="559" r="26" fill="#182B50" stroke="#FFD66B" stroke-width="2"/>
+    <text x="178" y="567" text-anchor="middle" fill="#EFF8FF" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="800">3</text>
+    <text x="238" y="546" fill="#EEF4FF" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="750">生成底层资源</text>
+    <text x="238" y="580" fill="#A9BCDF" font-family="Inter,Arial,sans-serif" font-size="18">自动创建 Deployment、DaemonSet、Service、ConfigMap 等资源，让 Collector 真正运行。</text>
+  </g>
+
+  <g>
+    <rect x="115" y="668" width="970" height="114" rx="28" fill="#111C35" stroke="#89C5FF" stroke-opacity="0.18" stroke-width="2"/>
+    <circle cx="178" cy="725" r="26" fill="#182B50" stroke="#8F7CFF" stroke-width="2"/>
+    <text x="178" y="733" text-anchor="middle" fill="#EFF8FF" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="800">4</text>
+    <text x="238" y="712" fill="#EEF4FF" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="750">持续修正状态</text>
+    <text x="238" y="746" fill="#A9BCDF" font-family="Inter,Arial,sans-serif" font-size="18">Pod 异常、配置漂移、版本变化时继续自动协调，让系统尽量回到期望状态。</text>
+  </g>
+
+  <path d="M600 284V336" stroke="url(#line3)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M600 450V502" stroke="url(#line3)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M600 616V668" stroke="url(#line3)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="600" cy="310" r="7" fill="#DDF6FF"/>
+  <circle cx="600" cy="476" r="7" fill="#DDF6FF"/>
+  <circle cx="600" cy="642" r="7" fill="#DDF6FF"/>
+</svg>

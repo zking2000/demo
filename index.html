@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenTelemetry Operator：人人都能看懂的云原生观测自动化</title>
+  <meta name="description" content="通俗易懂地介绍 OpenTelemetry Operator：它是什么、解决什么问题、如何工作、适合哪些场景。" />
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-soft: #0d1830;
+      --panel: rgba(16, 26, 49, 0.72);
+      --panel-strong: rgba(20, 32, 60, 0.92);
+      --line: rgba(160, 195, 255, 0.18);
+      --text: #ecf3ff;
+      --muted: #a9bcdf;
+      --accent: #6ce5ff;
+      --accent-2: #8f7cff;
+      --green: #53e6b5;
+      --yellow: #ffd66b;
+      --shadow: 0 30px 80px rgba(0,0,0,.35);
+      --radius: 24px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(108, 229, 255, 0.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(143, 124, 255, 0.18), transparent 24%),
+        linear-gradient(180deg, #07101c 0%, #0a1323 35%, #08111f 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(180deg, rgba(255,255,255,.65), transparent 92%);
+      pointer-events: none;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(8, 17, 31, 0.6);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 14px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .02em; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 30px rgba(108,229,255,.35);
+      position: relative;
+    }
+    .brand-mark::before, .brand-mark::after {
+      content: ""; position: absolute; inset: 8px; border-radius: 10px; border: 2px solid rgba(255,255,255,.92);
+    }
+    .brand-mark::after { inset: 14px; border-radius: 7px; border-color: rgba(255,255,255,.65); }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 18px; color: var(--muted); font-size: 14px; }
+
+    .hero { padding: 72px 0 44px; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: 32px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px;
+      border-radius: 999px; background: rgba(108, 229, 255, .10); border: 1px solid rgba(108,229,255,.18);
+      color: #c5f7ff; font-size: 14px; margin-bottom: 18px;
+    }
+    h1 {
+      margin: 0; font-size: clamp(40px, 6vw, 76px); line-height: .98; letter-spacing: -.04em;
+      text-wrap: balance;
+    }
+    .hero p.lead {
+      color: var(--muted); font-size: clamp(18px, 2.2vw, 22px); max-width: 680px; margin: 22px 0 0;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 48px; padding: 0 18px; border-radius: 999px; font-weight: 700;
+      border: 1px solid transparent; transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #77b5ff); color: #062131; box-shadow: 0 16px 38px rgba(108,229,255,.22); }
+    .btn-secondary { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); color: var(--text); }
+
+    .hero-card, .panel {
+      background: linear-gradient(180deg, rgba(15, 24, 45, 0.86), rgba(10, 18, 34, 0.92));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card { padding: 20px; position: relative; overflow: hidden; }
+    .hero-card::before {
+      content: ""; position: absolute; inset: auto -20% -25% auto; width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(108,229,255,.24), transparent 60%);
+      filter: blur(14px);
+    }
+    .hero-meta {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px;
+    }
+    .metric {
+      padding: 16px; border-radius: 18px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+    }
+    .metric strong { display: block; font-size: 28px; line-height: 1.1; }
+    .metric span { color: var(--muted); font-size: 13px; }
+
+    section { padding: 34px 0; }
+    .section-head { margin-bottom: 24px; }
+    .section-kicker { color: var(--accent); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
+    h2 { margin: 10px 0 0; font-size: clamp(28px, 4vw, 44px); line-height: 1.04; letter-spacing: -.03em; }
+    .section-desc { color: var(--muted); max-width: 780px; margin-top: 14px; font-size: 18px; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .card {
+      padding: 24px; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+    .card h3 { margin: 14px 0 10px; font-size: 22px; }
+    .card p { margin: 0; color: var(--muted); }
+    .icon {
+      width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(108,229,255,.18), rgba(143,124,255,.18));
+      border: 1px solid rgba(255,255,255,.08); font-size: 24px;
+    }
+
+    .story {
+      display: grid; grid-template-columns: .95fr 1.05fr; gap: 28px; align-items: center;
+    }
+    .story-copy ul { padding-left: 18px; color: var(--muted); }
+    .story-copy li + li { margin-top: 10px; }
+    .story-visual { padding: 20px; }
+
+    .callout {
+      padding: 22px; border-radius: 20px; background: linear-gradient(180deg, rgba(83,230,181,.10), rgba(83,230,181,.02));
+      border: 1px solid rgba(83,230,181,.2); color: #dcfff3; margin-top: 18px;
+    }
+
+    .timeline { display: grid; gap: 18px; }
+    .step {
+      display: grid; grid-template-columns: 58px 1fr; gap: 16px; align-items: start;
+      padding: 20px; border-radius: 20px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+    }
+    .step-badge {
+      width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; font-weight: 800;
+      background: linear-gradient(135deg, rgba(108,229,255,.22), rgba(143,124,255,.22)); color: white;
+    }
+    .step h3 { margin: 2px 0 8px; font-size: 21px; }
+    .step p { margin: 0; color: var(--muted); }
+
+    .compare {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
+    }
+    .compare-box {
+      padding: 22px; border-radius: 20px; border: 1px solid rgba(255,255,255,.07); background: rgba(255,255,255,.03);
+    }
+    .compare-box h3 { margin-top: 0; }
+    .compare-box ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    .compare-box li + li { margin-top: 8px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .chip {
+      padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: #dce9ff; font-size: 14px;
+    }
+
+    .faq { display: grid; gap: 16px; }
+    details {
+      border: 1px solid rgba(255,255,255,.08); border-radius: 18px; background: rgba(255,255,255,.03); padding: 18px 20px;
+    }
+    summary { cursor: pointer; font-weight: 700; }
+    details p { color: var(--muted); margin: 14px 0 0; }
+
+    footer { padding: 32px 0 60px; color: var(--muted); }
+    .footer-panel {
+      padding: 26px; border-radius: 24px; background: linear-gradient(180deg, rgba(14,23,42,.92), rgba(8,15,28,.92)); border: 1px solid var(--line);
+      display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+    }
+
+    .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .badge {
+      border-radius: 999px; padding: 8px 12px; font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); color: #d3e1fb;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .story, .grid-3, .grid-2, .compare { grid-template-columns: 1fr; }
+      .hero-meta { grid-template-columns: 1fr; }
+      .nav-inner { align-items: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding-top: 46px; }
+      h1 { font-size: 40px; }
+      .wrap { width: min(var(--max), calc(100% - 20px)); }
+      .card, .panel, .hero-card { padding: 18px; }
+      .step { grid-template-columns: 48px 1fr; }
+      .step-badge { width: 48px; height: 48px; border-radius: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div>OpenTelemetry Operator</div>
+      </div>
+      <div class="nav-links">
+        <a href="#what">它是什么</a>
+        <a href="#how">怎么工作</a>
+        <a href="#why">为什么需要</a>
+        <a href="#scenes">适用场景</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Kubernetes 里的“自动化运维助手”</div>
+        <h1>让 OpenTelemetry<br/>不再难部署、难维护</h1>
+        <p class="lead">如果把 OpenTelemetry Collector 比作“遥测数据收集员”，那么 OpenTelemetry Operator 就是“自动招人、排班、发装备、持续巡检的主管”。它把原本麻烦的 Kubernetes 配置，变成更稳定、更自动化的日常操作。</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#what">3 分钟看懂它</a>
+          <a class="btn btn-secondary" href="#faq">先看常见问题</a>
+        </div>
+        <div class="badge-row">
+          <div class="badge">Traces</div>
+          <div class="badge">Metrics</div>
+          <div class="badge">Logs</div>
+          <div class="badge">Kubernetes</div>
+          <div class="badge">Operator Pattern</div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <img src="assets/hero-telemetry.svg" alt="OpenTelemetry Operator 控制 Kubernetes 中 Collector 和遥测信号流动的示意图" />
+        <div class="hero-meta">
+          <div class="metric">
+            <strong>自动化</strong>
+            <span>把部署、升级、注入、维护交给 Operator</span>
+          </div>
+          <div class="metric">
+            <strong>标准化</strong>
+            <span>团队不再各写各的 Collector YAML</span>
+          </div>
+          <div class="metric">
+            <strong>可扩展</strong>
+            <span>随业务增长而演进的遥测管道</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="what">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">What</div>
+          <h2>OpenTelemetry Operator 到底是什么？</h2>
+          <p class="section-desc">一句话：它是运行在 Kubernetes 里的控制器，专门帮你自动部署和管理 OpenTelemetry 相关组件，尤其是 Collector 和自动注入能力。</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="icon">🧠</div>
+            <h3>它不是“采集器”本身</h3>
+            <p>真正负责接收 traces、metrics、logs 的通常是 OpenTelemetry Collector。Operator 更像“大脑”和“管家”，负责把这些采集器按规则创建出来并保持正确状态。</p>
+          </article>
+          <article class="card">
+            <div class="icon">🤖</div>
+            <h3>它是一种自动化机制</h3>
+            <p>你只需要声明“我想要一个 Collector”，Operator 就会在后台帮你创建 Deployment、DaemonSet、Service 等 Kubernetes 资源，而不是让你手写一大堆 YAML。</p>
+          </article>
+          <article class="card">
+            <div class="icon">🧩</div>
+            <h3>它遵循 Operator 模式</h3>
+            <p>所谓 Operator，本质上就是 Kubernetes 里的“高级运维程序”：持续观察集群状态，发现偏差后自动纠正，让系统始终接近你声明的目标状态。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="wrap story">
+        <div class="story-copy">
+          <div class="section-kicker">Why</div>
+          <h2>为什么很多团队需要它？</h2>
+          <p class="section-desc">因为“观测系统”一旦进入生产环境，最大的痛点通常不是会不会写配置，而是：能不能持续、稳定、规模化地管理这些配置。</p>
+          <ul>
+            <li>没有 Operator 时，团队常常手工维护 Collector 的 YAML，升级和变更容易出错。</li>
+            <li>不同服务、不同命名空间、不同环境可能有不同采集方式，手动维护很快就会失控。</li>
+            <li>当应用越来越多时，你会希望自动注入 Agent / SDK、自动 rollout、自动修复，而不是靠人工执行。</li>
+          </ul>
+          <div class="callout">
+            <strong>通俗比喻：</strong>没有 Operator，就像每开一家分店都要自己买设备、招人、拉网线、写制度；有了 Operator，就像总部把这些标准化，分店只要说“我要开业”，系统就自动把基础设施配齐。
+          </div>
+        </div>
+        <div class="panel story-visual">
+          <img src="assets/before-after.svg" alt="没有 Operator 与有 Operator 的前后对比图" />
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">How</div>
+          <h2>它是怎么工作的？</h2>
+          <p class="section-desc">从思路上看，非常像“你下目标，我来执行”。下面这 4 步基本概括了 OpenTelemetry Operator 的工作方式。</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel" style="padding: 22px;">
+            <div class="timeline">
+              <div class="step">
+                <div class="step-badge">1</div>
+                <div>
+                  <h3>你声明需求</h3>
+                  <p>例如创建一个 `OpenTelemetryCollector` 自定义资源，告诉集群：我想要一个怎样的 Collector、跑几个副本、暴露什么端口、用什么 pipeline。</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-badge">2</div>
+                <div>
+                  <h3>Operator 监听变化</h3>
+                  <p>它会持续观察这些自定义资源，一旦发现新增、修改或删除，就开始执行相应动作。</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-badge">3</div>
+                <div>
+                  <h3>自动创建底层资源</h3>
+                  <p>它会替你生成 Kubernetes 原生资源，比如 Deployment、DaemonSet、Service、ConfigMap，确保 Collector 真正跑起来。</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-badge">4</div>
+                <div>
+                  <h3>持续保持目标状态</h3>
+                  <p>如果 Pod 挂了、配置变了、版本升级了，Operator 会继续协调，尽量让真实运行状态回到你声明的理想状态。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding: 22px; display: grid; align-content: center; gap: 18px;">
+            <img src="assets/operator-flow.svg" alt="Operator 工作流图：声明资源、监听、创建 Collector、输出遥测数据" />
+            <div class="compare">
+              <div class="compare-box">
+                <h3>你负责</h3>
+                <ul>
+                  <li>定义想要的采集规则</li>
+                  <li>决定数据发往哪里</li>
+                  <li>选择部署模式</li>
+                </ul>
+              </div>
+              <div class="compare-box">
+                <h3>Operator 负责</h3>
+                <ul>
+                  <li>创建和更新资源</li>
+                  <li>让 Collector 按期望运行</li>
+                  <li>减少重复和人为错误</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="scenes">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">Scenarios</div>
+          <h2>它最适合哪些场景？</h2>
+          <p class="section-desc">如果你只是本地单机实验，它不一定是第一选择；但一旦进入 Kubernetes、多服务、多人协作的环境，它的价值会迅速放大。</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="icon">🚀</div>
+            <h3>微服务平台</h3>
+            <p>服务数量多、发布频繁、环境复杂，最需要统一的观测接入方式。Operator 能让每个团队都站在同一套标准上。</p>
+          </article>
+          <article class="card">
+            <div class="icon">🏭</div>
+            <h3>平台工程 / SRE 团队</h3>
+            <p>当你希望“平台层”统一提供 telemetry 能力，而不是每个业务团队各自摸索时，Operator 是极好的标准化抓手。</p>
+          </article>
+          <article class="card">
+            <div class="icon">📈</div>
+            <h3>需要规模化演进的系统</h3>
+            <p>今天只有 traces，明天要加 metrics，后天要按命名空间拆分 pipeline——Operator 可以让这种演进过程更可控。</p>
+          </article>
+        </div>
+
+        <div class="chips">
+          <div class="chip">Collector 统一部署</div>
+          <div class="chip">自动注入 instrumentation</div>
+          <div class="chip">声明式配置</div>
+          <div class="chip">批量升级更稳</div>
+          <div class="chip">多环境一致性</div>
+          <div class="chip">减少重复 YAML</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">Takeaway</div>
+          <h2>记住这三个核心点，就已经入门了</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="icon">1️⃣</div>
+            <h3>它是“管理者”</h3>
+            <p>OpenTelemetry Operator 管的是 Collector 和相关自动化能力，而不是替代 Collector 做数据采集。</p>
+          </article>
+          <article class="card">
+            <div class="icon">2️⃣</div>
+            <h3>它把复杂操作声明化</h3>
+            <p>你表达“想要什么”，它处理“具体怎么做”，非常适合 Kubernetes 的管理哲学。</p>
+          </article>
+          <article class="card">
+            <div class="icon">3️⃣</div>
+            <h3>它在规模化时最有价值</h3>
+            <p>集群越大、团队越多、变更越频繁，Operator 的价值越明显——因为它能把观测能力做成平台基础设施。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-kicker">FAQ</div>
+          <h2>常见问题</h2>
+        </div>
+        <div class="faq">
+          <details open>
+            <summary>OpenTelemetry Operator 和 OpenTelemetry Collector 有什么区别？</summary>
+            <p>Collector 是干活的：接收、处理、转发 telemetry 数据。Operator 是管理 Collector 的：部署它、更新它、让它在 Kubernetes 里稳定运行。</p>
+          </details>
+          <details>
+            <summary>没有 Kubernetes，还需要 OpenTelemetry Operator 吗？</summary>
+            <p>通常不需要。Operator 的主要价值在 Kubernetes 环境中。如果只是本地实验或单机部署，直接运行 Collector 往往更简单。</p>
+          </details>
+          <details>
+            <summary>它是不是只适合超大公司？</summary>
+            <p>不是。只要你已经在用 Kubernetes，并且希望减少重复配置、统一观测接入，它就有价值。只是团队越大，收益通常越明显。</p>
+          </details>
+          <details>
+            <summary>什么时候不一定要用它？</summary>
+            <p>当你的环境非常简单、Collector 数量很少、变更频率低时，直接手动部署 Collector 也完全可行。Operator 更像是“为了长期维护而投资”的方案。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-panel">
+      <div>
+        <strong style="display:block; font-size: 20px; margin-bottom: 6px; color: var(--text);">一句最后总结</strong>
+        <div>OpenTelemetry Operator 的价值，不在于“让遥测变得神奇”，而在于把遥测系统变成一种可复制、可维护、可规模化运营的基础设施能力。</div>
+      </div>
+      <div style="max-width: 280px;">
+        <strong style="display:block; font-size: 16px; margin-bottom: 8px; color: var(--text);">适合作为 GitHub Pages 首页</strong>
+        <div>单文件静态页面，无需构建，推送到仓库后即可启用 Pages。</div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
