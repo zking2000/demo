@@ -1,0 +1,107 @@
+<svg width="1600" height="980" viewBox="0 0 1600 980" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">OpenTelemetry Operator 大幅架构图</title>
+  <desc id="desc">展示应用、Instrumentation、Operator、Collector 与后端之间的关系，并带有动态数据流效果。</desc>
+  <defs>
+    <linearGradient id="bg" x1="160" y1="80" x2="1440" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1730"/>
+      <stop offset="1" stop-color="#070E18"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6CE5FF"/>
+      <stop offset="1" stop-color="#5FA8FF"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#8B84FF"/>
+      <stop offset="1" stop-color="#B38DFF"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6AE7BC"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="28" flood-color="#000814" flood-opacity="0.45"/>
+    </filter>
+    <style>
+      .box{fill:#0F1B31;stroke:#28486A;stroke-width:2.5;rx:28}
+      .title{fill:#EEF5FF;font:800 38px Inter,Arial,sans-serif}
+      .label{fill:#F3F8FF;font:800 26px Inter,Arial,sans-serif}
+      .small{fill:#A8BBD8;font:500 18px Inter,Arial,sans-serif}
+      .tag{fill:#C8EEFF;font:700 15px Inter,Arial,sans-serif;letter-spacing:.08em}
+      .muted{fill:#D7E6F7;font:500 20px Inter,Arial,sans-serif}
+      .floatA{animation:floatA 7s ease-in-out infinite}
+      .floatB{animation:floatB 9s ease-in-out infinite}
+      .pulse{animation:pulse 2.6s ease-in-out infinite}
+      @keyframes floatA {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+      @keyframes floatB {0%,100%{transform:translateY(0)}50%{transform:translateY(12px)}}
+      @keyframes pulse {0%,100%{opacity:.65}50%{opacity:1}}
+    </style>
+  </defs>
+  <rect width="1600" height="980" rx="40" fill="url(#bg)"/>
+  <rect x="48" y="48" width="1504" height="884" rx="34" stroke="#1E3651"/>
+  <text x="88" y="110" class="title">OpenTelemetry Operator 把“观测接入”变成平台能力</text>
+  <text x="88" y="150" class="small">左边是应用与注入，中间是控制面，下面是 Collector，右边是最终后端</text>
+
+  <g filter="url(#shadow)">
+    <rect x="90" y="220" width="360" height="250" rx="30" fill="#10213A" stroke="#2B557C"/>
+    <text x="128" y="270" class="tag">WORKLOADS</text>
+    <text x="128" y="328" class="label">Applications</text>
+    <text x="128" y="374" class="muted">Java · Node.js · Python · .NET · Go</text>
+    <text x="128" y="412" class="small">业务 Pod 产生日志、指标、链路</text>
+  </g>
+
+  <g filter="url(#shadow)" class="floatA">
+    <rect x="90" y="540" width="360" height="170" rx="30" fill="#112038" stroke="#3D5D8B"/>
+    <text x="128" y="590" class="tag">AUTO INSTRUMENTATION</text>
+    <text x="128" y="644" class="label">Instrumentation</text>
+    <text x="128" y="680" class="small">告诉 webhook：注入哪种探针、发到哪、怎么采样</text>
+  </g>
+
+  <g filter="url(#shadow)" class="pulse">
+    <rect x="620" y="180" width="360" height="240" rx="34" fill="#0E2039" stroke="#3771A0"/>
+    <text x="662" y="234" class="tag">CONTROL PLANE</text>
+    <text x="662" y="292" class="label">Operator</text>
+    <text x="662" y="334" class="muted">Controller Manager + Webhook</text>
+    <text x="662" y="372" class="small">watch CRD · mutate Pod · reconcile resources</text>
+  </g>
+
+  <g filter="url(#shadow)" class="floatB">
+    <rect x="620" y="520" width="360" height="220" rx="34" fill="#0E2036" stroke="#2F8A76"/>
+    <text x="662" y="574" class="tag">DATA PLANE</text>
+    <text x="662" y="632" class="label">OpenTelemetryCollector</text>
+    <text x="662" y="674" class="muted">Deployment · DaemonSet · StatefulSet · Sidecar</text>
+    <text x="662" y="712" class="small">receivers → processors → exporters</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1150" y="240" width="330" height="460" rx="34" fill="#111E34" stroke="#534E9D"/>
+    <text x="1190" y="294" class="tag">OBSERVABILITY BACKENDS</text>
+    <text x="1190" y="352" class="label">Jaeger / Tempo</text>
+    <text x="1190" y="398" class="label">Prometheus / APM</text>
+    <text x="1190" y="452" class="small">Collector 把处理后的数据送到这里</text>
+    <circle cx="1236" cy="560" r="14" fill="#6CE5FF"><animate attributeName="r" values="10;16;10" dur="2s" repeatCount="indefinite"/></circle>
+    <circle cx="1296" cy="560" r="14" fill="#8B84FF"><animate attributeName="r" values="16;10;16" dur="2s" repeatCount="indefinite"/></circle>
+    <circle cx="1356" cy="560" r="14" fill="#6AE7BC"><animate attributeName="r" values="10;16;10" dur="2.4s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <path d="M450 345H620" stroke="url(#cyan)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M450 625H620" stroke="url(#violet)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M980 630H1150" stroke="url(#green)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M800 420V520" stroke="url(#cyan)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M270 470V540" stroke="url(#violet)" stroke-width="5" stroke-linecap="round"/>
+
+  <circle cx="0" cy="0" r="10" fill="#FFFFFF">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M450 345 H620"/>
+  </circle>
+  <circle cx="0" cy="0" r="10" fill="#CFC8FF">
+    <animateMotion dur="3.3s" repeatCount="indefinite" path="M450 625 H620"/>
+  </circle>
+  <circle cx="0" cy="0" r="10" fill="#D7FFF0">
+    <animateMotion dur="3.1s" repeatCount="indefinite" path="M980 630 H1150"/>
+  </circle>
+  <circle cx="0" cy="0" r="10" fill="#EFFFFF">
+    <animateMotion dur="2.6s" repeatCount="indefinite" path="M800 420 V520"/>
+  </circle>
+  <circle cx="0" cy="0" r="10" fill="#E0DFFF">
+    <animateMotion dur="2.8s" repeatCount="indefinite" path="M270 470 V540"/>
+  </circle>
+</svg>

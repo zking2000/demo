@@ -730,6 +730,79 @@
     .faq summary { cursor: pointer; font-weight: 700; }
     .faq p { margin: 14px 0 0; }
 
+    .poster {
+      padding: 40px 0 28px;
+    }
+    .poster-stack {
+      display: grid;
+      gap: 18px;
+    }
+    .mega-kicker {
+      color: var(--cyan);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: 12px;
+    }
+    .mega-title {
+      margin: 0;
+      font-size: clamp(42px, 6vw, 86px);
+      line-height: .95;
+      letter-spacing: -.05em;
+      text-wrap: balance;
+    }
+    .mega-text {
+      margin: 0;
+      color: #d9e8fb;
+      font-size: clamp(24px, 2.6vw, 34px);
+      line-height: 1.22;
+      max-width: 1100px;
+      text-wrap: balance;
+    }
+    .poster-visual {
+      padding: 22px;
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(13,22,39,.92), rgba(9,16,29,.98));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .poster-visual img {
+      width: 100%;
+      border-radius: 22px;
+    }
+    .statement-band {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 6px;
+    }
+    .statement {
+      padding: 22px 24px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .statement strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .statement span {
+      display: block;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.35;
+    }
+    .center-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 18px;
+      margin-top: 12px;
+    }
+
     footer {
       padding: 34px 0 64px;
       color: var(--muted);
@@ -751,6 +824,7 @@
       .grid-2,
       .compare,
       .takeaways,
+      .statement-band,
       .resource-grid,
       .quick-grid { grid-template-columns: 1fr; }
       .hero-meta { grid-template-columns: 1fr; }
@@ -798,392 +872,101 @@
   </nav>
 
   <header class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <div class="eyebrow">Kubernetes 里的“观测自动化主管”</div>
-        <h1>让 OpenTelemetry<br/>在 Kubernetes 中更容易落地</h1>
-        <p class="lead">如果把 OpenTelemetry Collector 比作“遥测数据收集员”，那么 OpenTelemetry Operator 就像“自动招人、排班、发装备、持续巡检的主管”。它把原本繁琐的 Kubernetes 部署与维护，变成更标准化、更稳定的日常操作。</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#what">3 分钟看懂它</a>
-          <a class="btn btn-secondary" href="#install">直接看安装示例</a>
-        </div>
-        <div class="badge-row">
-          <div class="badge">Traces</div>
-          <div class="badge">Metrics</div>
-          <div class="badge">Logs</div>
-          <div class="badge">Kubernetes</div>
-          <div class="badge">Operator Pattern</div>
-          <div class="badge">Cloud Native</div>
-        </div>
-
-        <div class="quick-grid">
-          <div>
-            <strong>解决的问题</strong>
-            <p>把 Collector 的部署、升级、注入、维护统一自动化。</p>
-          </div>
-          <div>
-            <strong>最适合</strong>
-            <p>多服务、多环境、多人协作的 Kubernetes 平台。</p>
-          </div>
-          <div>
-            <strong>核心价值</strong>
-            <p>减少重复 YAML，降低变更风险，提高一致性。</p>
-          </div>
-          <div>
-            <strong>一句话</strong>
-            <p>你声明目标，Operator 负责把目标变成现实。</p>
-          </div>
-        </div>
+    <div class="wrap poster-stack">
+      <div class="eyebrow">Kubernetes 里的“观测接入控制面”</div>
+      <h1>让 OpenTelemetry 在 Kubernetes 中<br/>以平台方式落地</h1>
+      <p class="mega-text">少写 YAML。少做手工注入。多用 Operator 把部署、注入、维护统一起来。</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#what">先看大图</a>
+        <a class="btn btn-secondary" href="#install">再看安装示例</a>
       </div>
-
-      <div class="hero-card">
-        <div class="hero-diagram" aria-label="OpenTelemetry Operator 动态示意图">
-          <div class="ring"></div>
-          <div class="node top">
-            <strong>Applications</strong>
-            <span>应用产生 traces、metrics、logs</span>
-          </div>
-          <div class="node left">
-            <strong>Kubernetes</strong>
-            <span>Deployment / DaemonSet / Service</span>
-          </div>
-          <div class="node right">
-            <strong>Backends</strong>
-            <span>Jaeger · Tempo · Prometheus · APM</span>
-          </div>
-          <div class="node bottom">
-            <strong>Collector</strong>
-            <span>接收、处理、转发遥测数据</span>
-          </div>
-          <div class="core">
-            <div>
-              <strong>OTel Operator</strong>
-              <span>监听 CRD · 自动部署 · 持续协调</span>
-            </div>
-          </div>
-          <div class="connector h1"></div>
-          <div class="connector h2"></div>
-          <div class="connector v1"></div>
-          <div class="connector v2"></div>
-          <div class="signal s1"></div>
-          <div class="signal s2"></div>
-          <div class="signal s3"></div>
-          <div class="signal s4"></div>
-        </div>
-        <div class="hero-meta">
-          <div class="metric">
-            <strong>自动化</strong>
-            <span>把部署、升级、自动注入、维护交给 Operator。</span>
-          </div>
-          <div class="metric">
-            <strong>标准化</strong>
-            <span>团队不再各写各的 Collector 配置和安装脚本。</span>
-          </div>
-          <div class="metric">
-            <strong>可扩展</strong>
-            <span>随着业务增长，遥测管道可以更稳地演进。</span>
-          </div>
-        </div>
+      <div class="poster-visual">
+        <img src="assets/architecture-stage.svg" alt="OpenTelemetry Operator 首页大幅动态架构图" />
+      </div>
+      <div class="statement-band">
+        <div class="statement"><strong>统一部署</strong><span>Collector 的运行形态、配置与升级统一声明</span></div>
+        <div class="statement"><strong>统一注入</strong><span>应用在 Pod 创建阶段自动拿到探针与 OTel 配置</span></div>
+        <div class="statement"><strong>统一维护</strong><span>状态漂移时自动 reconcile，把现实拉回目标</span></div>
       </div>
     </div>
   </header>
 
   <main>
-    <section id="what">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="section-kicker">What</div>
-          <h2>OpenTelemetry Operator 到底是什么？</h2>
-          <p class="section-desc">一句话：它是运行在 Kubernetes 中的控制器，专门帮助你自动部署和管理 OpenTelemetry 相关组件，尤其是 Collector 以及自动注入探针能力。</p>
+    <section id="what" class="poster">
+      <div class="wrap poster-stack">
+        <div class="mega-kicker">WHAT</div>
+        <h2 class="mega-title">它不是 Collector。<br/>它是整套观测接入的控制面。</h2>
+        <p class="mega-text">你声明目标，它自动创建 Collector、自动注入探针、自动维持运行状态。</p>
+        <div class="poster-visual">
+          <img src="assets/architecture-stage.svg" alt="OpenTelemetry Operator 大幅动态架构图：应用、Instrumentation、Operator、Collector 与后端的关系" />
         </div>
-
-        <div class="grid-3">
-          <article class="card">
-            <div class="icon">🧠</div>
-            <h3>它不是“采集器”本身</h3>
-            <p>真正负责接收 traces、metrics、logs 的通常是 OpenTelemetry Collector。Operator 更像“大脑”和“管家”，负责把这些采集器按规则创建出来并保持正确状态。</p>
-          </article>
-          <article class="card">
-            <div class="icon">🤖</div>
-            <h3>它是一种自动化机制</h3>
-            <p>你只需要声明“我想要一个 Collector”，Operator 就会在后台替你创建 Deployment、DaemonSet、Service 等 Kubernetes 资源，而不是让你手写一大堆 YAML。</p>
-          </article>
-          <article class="card">
-            <div class="icon">🧩</div>
-            <h3>它遵循 Operator 模式</h3>
-            <p>所谓 Operator，本质上就是 Kubernetes 里的“高级运维程序”：持续观察集群状态，发现偏差后自动纠正，让系统始终接近你声明的目标状态。</p>
-          </article>
+        <div class="statement-band">
+          <div class="statement"><strong>看</strong><span>看 CRD、看 Pod、看状态变化</span></div>
+          <div class="statement"><strong>改</strong><span>改 Pod、改资源、改成你想要的样子</span></div>
+          <div class="statement"><strong>守</strong><span>守住期望状态，不让配置和运行漂走</span></div>
         </div>
       </div>
     </section>
 
-    <section id="groups">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="section-kicker">Groups</div>
-          <h2>先看“资源组”：Operator 实际管理哪些 CRD？</h2>
-          <p class="section-desc">先记住 4 个名字即可：<code>OpenTelemetryCollector</code> 管采集器，<code>Instrumentation</code> 管自动注入，<code>TargetAllocator</code> 管 Prometheus 目标分配，<code>OpAMPBridge</code> 管远端桥接。</p>
+    <section id="groups" class="poster">
+      <div class="wrap poster-stack">
+        <div class="mega-kicker">GROUPS</div>
+        <h2 class="mega-title">先记住 4 组资源。</h2>
+        <p class="mega-text">采集器、自动注入、目标分配、远端桥接。</p>
+        <div class="poster-visual">
+          <img src="assets/resource-groups-stage.svg" alt="Operator 管理的四组资源大图：OpenTelemetryCollector、Instrumentation、TargetAllocator、OpAMPBridge" />
         </div>
-
-        <div class="panel visual-panel">
-          <img src="assets/resource-groups.svg" alt="OpenTelemetry Operator 资源组示意图，包含 OpenTelemetryCollector、Instrumentation、TargetAllocator、OpAMPBridge" />
-          <div class="caption">图解理解：它们都属于 <code>opentelemetry.io</code> 这组 API，但分别解决“采集器管理、自动注入、抓取目标分配、远程管理桥接”四类问题。</div>
-        </div>
-
         <div class="resource-grid">
-          <article class="resource-card">
-            <div class="tag">v1beta1</div>
-            <h3>OpenTelemetryCollector</h3>
-            <p>声明 Collector 的运行形态与 pipeline。</p>
-          </article>
-          <article class="resource-card">
-            <div class="tag">v1alpha1</div>
-            <h3>Instrumentation</h3>
-            <p>定义自动注入探针时用到的语言与导出配置。</p>
-          </article>
-          <article class="resource-card">
-            <div class="tag">v1alpha1</div>
-            <h3>TargetAllocator</h3>
-            <p>给多个 Collector 分配 Prometheus 抓取目标。</p>
-          </article>
-          <article class="resource-card">
-            <div class="tag">v1alpha1</div>
-            <h3>OpAMPBridge</h3>
-            <p>把集群内 Collector 连接到远端 OpAMP 管理端。</p>
-          </article>
+          <article class="resource-card"><div class="tag">v1beta1</div><h3>OpenTelemetryCollector</h3><p>定义 Collector 怎么跑。</p></article>
+          <article class="resource-card"><div class="tag">v1alpha1</div><h3>Instrumentation</h3><p>定义探针怎么注入。</p></article>
+          <article class="resource-card"><div class="tag">v1alpha1</div><h3>TargetAllocator</h3><p>定义 targets 怎么分。</p></article>
+          <article class="resource-card"><div class="tag">v1alpha1</div><h3>OpAMPBridge</h3><p>定义远端怎么接。</p></article>
         </div>
       </div>
     </section>
 
-    <section id="components">
-      <div class="wrap visual-split">
-        <div class="panel visual-panel">
-          <img src="assets/components-runtime.svg" alt="OpenTelemetry Operator 运行组件图，展示 controller manager、admission webhook、collector 与 backends" />
-          <div class="caption">你可以把它分成两层来看：上层是控制平面（controller manager、webhook），下层是被它管理出来的工作负载（Collector、TargetAllocator 等）。</div>
+    <section id="components" class="poster">
+      <div class="wrap poster-stack">
+        <div class="mega-kicker">COMPONENTS</div>
+        <h2 class="mega-title">组件不多，但分工非常清楚。</h2>
+        <p class="mega-text">Controller Manager 负责协调，Webhook 负责注入，Collector 负责真正采集与转发。</p>
+        <div class="statement-band">
+          <div class="statement"><strong>Controller</strong><span>watch CRD，执行 reconcile</span></div>
+          <div class="statement"><strong>Webhook</strong><span>拦截 Pod，注入探针与环境变量</span></div>
+          <div class="statement"><strong>Collector</strong><span>接收、处理、转发 traces / metrics / logs</span></div>
         </div>
-        <div class="panel text-panel">
-          <div class="section-kicker">Components</div>
-          <h2>再看“组件用途”：每个组件分别干什么？</h2>
-          <div class="component-list">
-            <div class="component-item">
-              <div class="label">核心控制器</div>
-              <div>
-                <strong>Controller Manager</strong>
-                <p>负责 watch CRD 并执行 reconcile，把期望状态变成真实资源。</p>
-              </div>
-            </div>
-            <div class="component-item">
-              <div class="label">变更入口</div>
-              <div>
-                <strong>Admission Webhook</strong>
-                <p>在 Pod 创建时改写清单，自动注入探针、环境变量或 sidecar。</p>
-              </div>
-            </div>
-            <div class="component-item">
-              <div class="label">采集执行面</div>
-              <div>
-                <strong>OpenTelemetry Collector</strong>
-                <p>真正负责接收、处理、转发链路追踪、指标和日志。</p>
-              </div>
-            </div>
-            <div class="component-item">
-              <div class="label">辅助扩展</div>
-              <div>
-                <strong>TargetAllocator / OpAMPBridge</strong>
-                <p>前者分配抓取目标，后者做远端 OpAMP 桥接。</p>
-              </div>
-            </div>
-          </div>
+        <div class="center-note">这也是为什么它更像“平台层控制面”，而不是一个普通采集程序。</div>
+      </div>
+    </section>
 
-          <div class="mini-cards">
-            <div class="mini-card">
-              <strong>为什么常提 cert-manager？</strong>
-              <p>因为 admission webhook 往往需要证书，官方安装说明里通常会先准备 cert-manager。</p>
-            </div>
-            <div class="mini-card">
-              <strong>为什么说它是平台能力？</strong>
-              <p>因为它把“应用接入观测”从每个业务团队的手工活，变成平台层统一托管的基础设施。</p>
-            </div>
-          </div>
+    <section id="principle" class="poster">
+      <div class="wrap poster-stack">
+        <div class="mega-kicker">PRINCIPLE</div>
+        <h2 class="mega-title">实现原理就两件事。</h2>
+        <p class="mega-text">上半场是 reconcile loop。下半场是 admission webhook。</p>
+        <div class="poster-visual">
+          <img src="assets/reconcile-stage.svg" alt="OpenTelemetry Operator 的 reconcile loop 大图" />
+        </div>
+        <div class="statement-band">
+          <div class="statement"><strong>监听</strong><span>任何变更都会触发下一轮协调</span></div>
+          <div class="statement"><strong>计算</strong><span>根据 spec 计算应该生成哪些资源</span></div>
+          <div class="statement"><strong>校正</strong><span>真实状态偏了就继续拉回去</span></div>
         </div>
       </div>
     </section>
 
-    <section>
-      <div class="wrap cncf-band">
-        <div class="cncf-copy panel">
-          <div class="section-kicker">Cloud Native Style</div>
-          <h2>更贴近 CNCF / Kubernetes 语境来理解它</h2>
-          <p class="section-desc">在云原生世界里，大家追求的是声明式、可重复、可扩展、平台化。OpenTelemetry Operator 恰好把“观测接入”这件事，也带进了这条标准路径。</p>
-          <div class="cncf-points">
-            <div>
-              <strong>声明式</strong>
-              <span>你描述想要的状态，而不是手工执行每一个命令。</span>
-            </div>
-            <div>
-              <strong>平台化</strong>
-              <span>平台团队可以统一提供观测能力，业务团队按规则接入。</span>
-            </div>
-            <div>
-              <strong>可演进</strong>
-              <span>从单个 Collector 到多 pipeline、多环境治理，路径更平滑。</span>
-            </div>
-          </div>
+    <section class="poster">
+      <div class="wrap poster-stack">
+        <div class="mega-kicker">AUTO INSTRUMENTATION</div>
+        <h2 class="mega-title">自动注入发生在<br/>Pod 创建的那一刻。</h2>
+        <p class="mega-text">不是改应用代码，而是改 Pod 模板。</p>
+        <div class="poster-visual">
+          <img src="assets/injection-stage.svg" alt="OpenTelemetry Operator 自动注入流程大图" />
         </div>
-        <div class="cncf-diagram panel">
-          <div class="mini-arch">
-            <div class="row">
-              <div class="box"><div><strong>应用服务</strong><small>产生遥测数据</small></div></div>
-              <div class="center"><div><strong>Operator</strong><small>持续监听 CRD，生成并维护资源</small></div></div>
-              <div class="box"><div><strong>观测后端</strong><small>Jaeger / Tempo / Prometheus / APM</small></div></div>
-            </div>
-            <div class="row">
-              <div class="box"><div><strong>Deployment</strong><small>适合网关模式</small></div></div>
-              <div class="box"><div><strong>DaemonSet</strong><small>适合节点级采集</small></div></div>
-              <div class="box"><div><strong>Sidecar / 注入</strong><small>适合细粒度控制</small></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="why">
-      <div class="wrap story">
-        <div class="story-copy">
-          <div class="section-kicker">Why</div>
-          <h2>为什么很多团队需要它？</h2>
-          <p class="section-desc">因为观测系统一旦进入生产环境，最大的痛点通常不是“会不会写配置”，而是“能不能持续、稳定、规模化地管理这些配置”。</p>
-          <ul>
-            <li>没有 Operator 时，团队常常手工维护 Collector YAML，升级和变更很容易出错。</li>
-            <li>不同服务、不同命名空间、不同环境可能有不同采集方式，手动维护很快就会失控。</li>
-            <li>当应用越来越多时，你往往希望自动注入 Agent 或 SDK、自动滚动更新、自动修复，而不是一直靠人工执行。</li>
-          </ul>
-          <div class="callout">
-            <strong>通俗比喻：</strong>没有 Operator，就像每开一家分店都要自己买设备、招人、拉网线、写制度；有了 Operator，就像总部把这些流程标准化，分店只要说“我要开业”，系统就会自动把基础设施配齐。
-          </div>
-        </div>
-        <div class="panel story-visual">
-          <img src="assets/before-after.svg" alt="没有 Operator 与有 Operator 的前后对比图" />
-        </div>
-      </div>
-    </section>
-
-    <section id="principle">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="section-kicker">Principle</div>
-          <h2>实现原理：它为什么能“自动把事情做完”？</h2>
-          <p class="section-desc">本质上靠两套机制一起工作：一套是 <strong>reconcile 循环</strong>，负责把 CRD 变成真正的 Kubernetes 资源；另一套是 <strong>admission webhook</strong>，负责在应用创建时自动注入探针。</p>
-        </div>
-
-        <div class="grid-2">
-          <div class="panel visual-panel">
-            <img src="assets/reconcile-loop.svg" alt="OpenTelemetry Operator reconcile loop 原理图" />
-            <div class="caption">官方思路可以概括成四步：监听变化 → 读取 spec → 生成底层资源 → 发现偏差后再次协调，直到真实状态收敛到期望状态。</div>
-          </div>
-
-          <div class="panel" style="padding: 22px;">
-            <div class="timeline">
-              <div class="step">
-                <div class="step-badge">1</div>
-                <div>
-                  <h3>监听 CRD 与状态变化</h3>
-                  <p>Controller Manager 会 watch <code>OpenTelemetryCollector</code> 等资源。一旦你新建、修改或删除这些对象，就会触发一次新的协调流程。</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-badge">2</div>
-                <div>
-                  <h3>解析 spec 并计算目标资源</h3>
-                  <p>它会读取 <code>mode</code>、<code>config</code>、端口、监控开关等信息，决定该生成什么样的 Deployment、DaemonSet、Service、ConfigMap 等对象。</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-badge">3</div>
-                <div>
-                  <h3>把配置渲染成 Kubernetes 原生对象</h3>
-                  <p>例如根据 Collector 配置里的 receiver 端口生成对应 Service；如果开启 observability metrics，还会生成相关监控对象。</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-badge">4</div>
-                <div>
-                  <h3>持续校正而不是一次性创建</h3>
-                  <p>如果 Pod 异常、版本更新、配置被改掉，Operator 会继续 reconcile，让实际状态尽量回到你声明的目标状态。</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-2" style="margin-top: 20px;">
-          <div class="panel visual-panel">
-            <img src="assets/injection-flow.svg" alt="OpenTelemetry Operator 自动注入探针流程图" />
-            <div class="caption">自动注入不是应用自己“突然支持 OTel”，而是在 Pod 创建阶段由 webhook 拦截并改写清单，把探针、环境变量或 sidecar 加进去。</div>
-          </div>
-          <div class="panel text-panel">
-            <h3 style="margin-top:0; font-size:30px;">自动注入这件事是怎么实现的？</h3>
-            <div class="component-list">
-              <div class="component-item">
-                <div class="label">注解触发</div>
-                <div>
-                  <strong>应用 Pod 带上注解</strong>
-                  <p>例如用注解声明要注入 Java、Node.js、Python 等语言的自动探针，或指定具体的 <code>Instrumentation</code> 资源。</p>
-                </div>
-              </div>
-              <div class="component-item">
-                <div class="label">Webhook 改写</div>
-                <div>
-                  <strong>创建请求被 Admission Webhook 拦截</strong>
-                  <p>Webhook 读取 <code>Instrumentation</code> 里的 exporter、采样器、资源属性等配置，再把 Pod 模板补充完整。</p>
-                </div>
-              </div>
-              <div class="component-item">
-                <div class="label">最终效果</div>
-                <div>
-                  <strong>应用启动时已经“带着探针”</strong>
-                  <p>也就是说，你看到的是一个已经被改写过的 Pod：里面多了探针依赖、环境变量、挂载项或 initContainer。</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="scenes">
-      <div class="wrap">
-        <div class="section-head">
-          <div class="section-kicker">Scenarios</div>
-          <h2>它最适合哪些场景？</h2>
-          <p class="section-desc">如果你只是本地单机实验，它不一定是第一选择；但一旦进入 Kubernetes、多服务、多人协作的环境，它的价值会迅速放大。</p>
-        </div>
-
-        <div class="grid-3">
-          <article class="card">
-            <div class="icon">🚀</div>
-            <h3>微服务平台</h3>
-            <p>服务数量多、发布频繁、环境复杂，最需要统一的观测接入方式。Operator 能让每个团队都站在同一套标准上。</p>
-          </article>
-          <article class="card">
-            <div class="icon">🏭</div>
-            <h3>平台工程 / SRE 团队</h3>
-            <p>当你希望平台层统一提供观测能力，而不是每个业务团队各自摸索时，Operator 是非常有效的标准化抓手。</p>
-          </article>
-          <article class="card">
-            <div class="icon">📈</div>
-            <h3>需要规模化演进的系统</h3>
-            <p>今天只有链路追踪，明天要加指标，后天要按命名空间拆分数据管道——Operator 能让这种演进过程更可控。</p>
-          </article>
-        </div>
-
-        <div class="chips">
-          <div class="chip">Collector 统一部署</div>
-          <div class="chip">自动注入探针</div>
-          <div class="chip">声明式配置</div>
-          <div class="chip">批量升级更稳</div>
-          <div class="chip">多环境一致性</div>
-          <div class="chip">减少重复 YAML</div>
+        <div class="statement-band">
+          <div class="statement"><strong>注解</strong><span>告诉系统这份工作负载要不要注入</span></div>
+          <div class="statement"><strong>改写</strong><span>Webhook 注入 env、volume、initContainer 或 sidecar</span></div>
+          <div class="statement"><strong>启动</strong><span>应用一启动，就已经带着 OTel 探针</span></div>
         </div>
       </div>
     </section>

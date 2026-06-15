@@ -1,0 +1,66 @@
+<svg width="1600" height="980" viewBox="0 0 1600 980" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">自动注入流程大图</title>
+  <desc id="desc">展示应用部署经过 webhook 改写，最终带着探针和环境变量启动并上报到 Collector 的流程。</desc>
+  <defs>
+    <linearGradient id="bg" x1="120" y1="80" x2="1480" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1730"/>
+      <stop offset="1" stop-color="#070E18"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="28" flood-color="#000814" flood-opacity="0.45"/>
+    </filter>
+    <style>
+      .h{fill:#EEF5FF;font:800 40px Inter,Arial,sans-serif}
+      .k{fill:#CDEBFF;font:700 14px Inter,Arial,sans-serif;letter-spacing:.08em}
+      .t{fill:#F2F7FF;font:800 28px Inter,Arial,sans-serif}
+      .d{fill:#D7E6F7;font:500 20px Inter,Arial,sans-serif}
+    </style>
+  </defs>
+  <rect width="1600" height="980" rx="40" fill="url(#bg)"/>
+  <text x="88" y="114" class="h">自动注入发生在 Pod 创建时，不在应用代码里</text>
+  <text x="88" y="154" class="d">看的是注解，改的是 Pod 模板，最后才是应用带着探针启动</text>
+
+  <g filter="url(#shadow)">
+    <rect x="96" y="310" width="300" height="300" rx="32" fill="#10213A" stroke="#2E597F" stroke-width="2.5"/>
+    <text x="136" y="364" class="k">STEP 1</text>
+    <text x="136" y="424" class="t">提交 Deployment</text>
+    <text x="136" y="470" class="d">带上 instrumentation 注解</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="470" y="250" width="300" height="420" rx="32" fill="#112038" stroke="#4A63A7" stroke-width="2.5"/>
+    <text x="510" y="304" class="k">STEP 2</text>
+    <text x="510" y="364" class="t">Webhook 拦截</text>
+    <text x="510" y="410" class="d">读取 Instrumentation</text>
+    <text x="510" y="450" class="d">补 env / volume / initContainer</text>
+    <text x="510" y="490" class="d">必要时加 sidecar</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="844" y="310" width="300" height="300" rx="32" fill="#102038" stroke="#317E7B" stroke-width="2.5"/>
+    <text x="884" y="364" class="k">STEP 3</text>
+    <text x="884" y="424" class="t">带探针启动</text>
+    <text x="884" y="470" class="d">应用启动时已经拿到 OTEL_* 变量</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1218" y="310" width="286" height="300" rx="32" fill="#111F37" stroke="#5B59B5" stroke-width="2.5"/>
+    <text x="1258" y="364" class="k">STEP 4</text>
+    <text x="1258" y="424" class="t">发往 Collector</text>
+    <text x="1258" y="470" class="d">再由 Collector 处理并转发</text>
+  </g>
+
+  <path d="M396 460H470" stroke="#6CE5FF" stroke-width="6" stroke-linecap="round"/>
+  <path d="M770 460H844" stroke="#8B84FF" stroke-width="6" stroke-linecap="round"/>
+  <path d="M1144 460H1218" stroke="#6AE7BC" stroke-width="6" stroke-linecap="round"/>
+
+  <circle cx="0" cy="0" r="11" fill="#FFFFFF">
+    <animateMotion dur="2.4s" repeatCount="indefinite" path="M396 460 H470"/>
+  </circle>
+  <circle cx="0" cy="0" r="11" fill="#E8E1FF">
+    <animateMotion dur="2.6s" repeatCount="indefinite" path="M770 460 H844"/>
+  </circle>
+  <circle cx="0" cy="0" r="11" fill="#DFFFEF">
+    <animateMotion dur="2.4s" repeatCount="indefinite" path="M1144 460 H1218"/>
+  </circle>
+</svg>
