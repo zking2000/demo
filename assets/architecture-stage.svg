@@ -27,13 +27,13 @@
   <text x="92" y="156" fill="#FFFFFF" font-size="44" font-family="Inter, Arial, sans-serif" font-weight="820">Where OpenTelemetry Operator sits in the stack</text>
 
   <g opacity="0.9">
-    <rect x="92" y="196" width="380" height="70" rx="18" fill="rgba(11,20,34,0.88)" stroke="rgba(255,255,255,0.08)"/>
-    <circle cx="132" cy="231" r="8" fill="#78E7FF"/>
-    <text x="152" y="238" fill="#DFF9FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Business flow</text>
-    <circle cx="276" cy="231" r="8" fill="#A493FF"/>
-    <text x="296" y="238" fill="#EEE8FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Control flow</text>
-    <circle cx="405" cy="231" r="8" fill="#FFD874"/>
-    <text x="425" y="238" fill="#FFF3CC" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Export flow</text>
+    <rect x="92" y="182" width="250" height="132" rx="18" fill="rgba(11,20,34,0.88)" stroke="rgba(255,255,255,0.08)"/>
+    <circle cx="130" cy="216" r="8" fill="#78E7FF"/>
+    <text x="150" y="223" fill="#DFF9FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Business flow</text>
+    <circle cx="130" cy="248" r="8" fill="#A493FF"/>
+    <text x="150" y="255" fill="#EEE8FF" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Control flow</text>
+    <circle cx="130" cy="280" r="8" fill="#FFD874"/>
+    <text x="150" y="287" fill="#FFF3CC" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="700">Export flow</text>
   </g>
 
   <rect x="110" y="320" width="250" height="360" rx="28" fill="rgba(10,24,40,0.92)" stroke="rgba(120,231,255,0.24)" filter="url(#shadow)"/>
