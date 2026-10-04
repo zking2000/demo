@@ -26,3 +26,5 @@
    - Folder: `/ (root)`
 
 启用后首页会自动使用 `index.html`。
+
+GITHUB APP TEST
